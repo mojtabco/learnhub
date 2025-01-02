@@ -11,7 +11,7 @@ from courses.models import Course, CourseSeason, Lesson, SubCategory, Category
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from courses.models.lesson_models import StudentProgress, Certificate
-from courses.views import number_to_words, paginate_queryset, is_demo_user
+from courses.views import number_to_words, paginate_queryset, is_demo_user, restrict_demo_user
 from docx import Document  #python-docx
 from docx2pdf import convert
 import os ,random
@@ -326,11 +326,9 @@ class MyLessonView(LoginRequiredMixin, View):
         context = self.get_context_data(request)
         return render(request, self.template_name, context)
 
+    # TODO: Remove this decorator in the final version as it is intended for demo purposes only.
+    @restrict_demo_user
     def post(self, request, *args, **kwargs):
-
-        if is_demo_user(request):
-            context = self.get_context_data(request)
-            return render(request, self.template_name, context)
 
         form = LessonForm(request.POST, request.FILES)
         if form.is_valid():
@@ -402,6 +400,7 @@ class CourseUpdateView(LoginRequiredMixin, View):
 
     def post(self, request, *args, **kwargs):
 
+        # TODO: Remove this decorator in the final version as it is intended for demo purposes only.
         if is_demo_user(request):
             context = self.get_context_data(request)
             return render(request, self.template_name, context)
@@ -540,11 +539,9 @@ class LessonUpdateView(LoginRequiredMixin, View):
         context = self.get_context_data(request)
         return render(request, self.template_name, context)
 
+    # TODO: Remove this decorator in the final version as it is intended for demo purposes only.
+    @restrict_demo_user
     def post(self, request, *args, **kwargs):
-
-        if is_demo_user(request):
-            context = self.get_context_data(request)
-            return render(request, self.template_name, context)
 
         action = request.POST.get('action')
 

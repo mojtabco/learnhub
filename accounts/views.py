@@ -17,17 +17,8 @@ from datetime import timedelta
 from courses.forms import SearchForm
 from courses.models import Course
 from courses.models.course_models import SiteAccessGroup
-from courses.views import paginate_queryset, is_demo_user
-from functools import wraps
-from django.http import HttpResponseForbidden
+from courses.views import paginate_queryset, restrict_demo_user
 
-def restrict_demo_user(func):
-    @wraps(func)
-    def wrapper(self, request, *args, **kwargs):
-        if request.user.username == "demo":
-            raise Http404("شما از نسخه دمو استفاده می‌کنید این امکان برای کاربر دمو فعال نمی باشد")
-        return func(self, request, *args, **kwargs)
-    return wrapper
 
 # Create your views here.
 class ProfileView(LoginRequiredMixin, View):
@@ -65,6 +56,7 @@ class ProfileView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
+    # TODO: Remove this decorator in the final version as it is intended for demo purposes only.
     @restrict_demo_user
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -241,6 +233,7 @@ class UsersView(View):
 
         return render(request, self.template_name, context)
 
+    # TODO: Remove this decorator in the final version as it is intended for demo purposes only.
     @restrict_demo_user
     def post(self, request, *args, **kwargs):
 
@@ -305,6 +298,7 @@ class UserUpdateView(View):
 
         return render(request, self.template_name, context)
 
+    # TODO: Remove this decorator in the final version as it is intended for demo purposes only.
     @restrict_demo_user
     def post(self, request, id, *args, **kwargs):
 
@@ -317,17 +311,17 @@ class UserUpdateView(View):
         action = request.POST.get('action')
 
         if action == 'OkayUpdate':
-            return self._handle_update(request, user, profile, form, form_user)
+            return self.handle_update(request, user, profile, form, form_user)
         elif action == 'OkayAccess':
-            return self._handle_access(request, form_access)
+            return self.handle_access(request, form_access)
         elif action == 'OkayPassword':
-            return self._handle_password(request, user)
+            return self.handle_password(request, user)
         elif action == 'OkayDelete':
-            return self._handle_delete(request, user, profile)
+            return self.handle_delete(request, user, profile)
 
         return render(request, self.template_name, {'form': form, 'profile': profile, 'form_user': form_user, 'form_access': form_access})
 
-    def _handle_update(self, request, user, profile, form, form_user):
+    def handle_update(self, request, user, profile, form, form_user):
         if form.is_valid() and form_user.is_valid():
             if form.has_changed() or form_user.has_changed():
                 form_user.instance.is_active = True
@@ -339,7 +333,7 @@ class UserUpdateView(View):
             messages.error(request, 'لطفاً فرم‌ها را به درستی پر کنید.')
         return redirect(reverse('user-update', kwargs={'id': user.id}))
 
-    def _handle_access(self, request, form_access):
+    def handle_access(self, request, form_access):
         if form_access.is_valid():
             if form_access.has_changed():
                 form_access.save()
@@ -349,7 +343,7 @@ class UserUpdateView(View):
             messages.error(request, 'لطفاً فرم دسترسی را به درستی پر کنید.')
         return redirect(reverse('user-update', kwargs={'id': form_access.instance.user.id}))
 
-    def _handle_password(self, request, user):
+    def handle_password(self, request, user):
         password = request.POST.get("password")
         confirm_password = request.POST.get("confirm_password")
 
@@ -361,7 +355,7 @@ class UserUpdateView(View):
             messages.error(request, 'رمزها مطابقت ندارند، لطفاً فرم را به درستی پر کنید.')
             return redirect(reverse('user-update', kwargs={'id': user.id}))
 
-    def _handle_delete(self, request, user, profile):
+    def handle_delete(self, request, user, profile):
         profile.delete()
         user.delete()
         messages.success(request, 'کاربر با موفقیت حذف شد.')
@@ -405,6 +399,7 @@ class GroupsView(View):
 
         return render(request, self.template_name, context)
 
+    # TODO: Remove this decorator in the final version as it is intended for demo purposes only.
     @restrict_demo_user
     def post(self, request, *args, **kwargs):
         form = SiteAccessGroupForm(request.POST)
@@ -450,6 +445,7 @@ class GroupUpdateView(View):
         }
         return render(request, self.template_name, context)
 
+    # TODO: Remove this decorator in the final version as it is intended for demo purposes only.
     @restrict_demo_user
     def post(self, request, id, *args, **kwargs):
         action = request.POST.get('action')

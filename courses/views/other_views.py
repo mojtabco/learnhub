@@ -1,8 +1,10 @@
-from django.shortcuts import render
+from django.http import Http404
 from docx2pdf import convert
 
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.contrib import messages
+
+from functools import wraps
 
 def number_to_words(number):
     numbers_dict = {
@@ -49,3 +51,11 @@ def is_demo_user(request):
         messages.error(request, "شما از نسخه دمو استفاده می‌کنید این امکان برای کاربر دمو فعال نمی باشد.")
         return True
     return None
+
+def restrict_demo_user(func):
+    @wraps(func)
+    def wrapper(self, request, *args, **kwargs):
+        if request.user.username == "demo":
+            raise Http404("شما از نسخه دمو استفاده می‌کنید این امکان برای کاربر دمو فعال نمی باشد")
+        return func(self, request, *args, **kwargs)
+    return wrapper
