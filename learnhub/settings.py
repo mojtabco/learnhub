@@ -183,7 +183,7 @@ SITE_DEFAULT_ICON = f'assets/images/default/default-icon-sm.png'
 SITE_DEFAULT_LOGO = f'assets/images/default/default-logo.png'
 
 
-SITE_WEBSITE = 'http://www.learnhub.com'
+SITE_WEBSITE = 'https://github.com/mojtabco/learnhub'
 TIME_MINUTES_AGO = 5
 CARD_SHADOW ='shadow'
 VERSION_SITE = '1.2583H9'
