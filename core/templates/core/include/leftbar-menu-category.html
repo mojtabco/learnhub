@@ -1,0 +1,225 @@
+<div class="collapse navbar-collapse d-none " id="sidebarCollapse">
+    <!-- Navigation -->
+    <ul class="navbar-nav">
+        <li class="nav-link">
+            <a class="icon-dual-file" href="{% url 'search' %}">
+                <span class="btn btn-soft-primary">
+                    مشاهده همه دوره ها
+                </span>
+            </a>
+        </li><!--end nav-item-->
+    </ul><!--end navbar-nav--->
+
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link " href="#sidebarLearning" data-bs-toggle="collapse" role="button"
+               aria-expanded="false" aria-controls="sidebarAnalytics">
+                مهارت های رایانه ای
+            </a>
+            <div class="collapse " id="sidebarLearning">
+                <ul class="nav flex-column">
+                    {% if category.title == 'مهارت های رایانه ای' %}
+                        <a href="{% url 'search' %}"></a>
+                    {% endif %}
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=برنامه نویسی">
+                            <i class="mdi mdi-code-braces mdi-18px me-1 align-text-bottom"></i>
+                            <span>برنامه نویسی</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=شبکه">
+                            <i class="mdi mdi-ip-network mdi-18px me-1 align-text-bottom"></i>
+                            <span>شبکه</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=امنیت">
+                            <i class="mdi mdi-security mdi-18px me-1 align-text-bottom"></i>
+                            <span>امنیت</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=سیستم عامل">
+                            <i class="mdi mdi-monitor-dashboard mdi-18px me-1 align-text-bottom"></i>
+                            <span>سیستم عامل</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=طراحی سایت">
+                            <i class="mdi mdi-web mdi-18px me-1 align-text-bottom"></i>
+                            <span>طراحی سایت</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=گرافیک و انیمیشن">
+                            <i class="mdi mdi-animation-play mdi-18px me-1 align-text-bottom"></i>
+                            <span> گرافیک و انیمیشن</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=نرم افزار کاربردی">
+                            <i class="mdi mdi-office mdi-18px me-1 align-text-bottom"></i>
+                            <span>نرم افزار کاربردی</span>
+                        </a>
+                    </li><!--end nav-item-->
+                </ul><!--end nav-->
+            </div><!--end sidebarAnalytics-->
+        </li><!--end nav-item-->
+    </ul><!--end navbar-nav--->
+
+    <!-- Navigation -->
+    <ul class="navbar-nav">
+        <li class="nav-item ">
+            <a class="nav-link" href="#sidebarLife" data-bs-toggle="collapse" role="button"
+               aria-expanded="false" aria-controls="sidebarAnalytics">
+                مهارت های زندگی
+            </a>
+            <div class="collapse " id="sidebarLife">
+                <ul class="nav flex-column">
+                    {% if category.title == 'مهارت های زندگی' %}
+                        <a href="{% url 'search' %}"></a>
+                    {% endif %}
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=سلامت">
+                            <i class="mdi mdi-medical-bag mdi-18px me-1 align-text-bottom"></i>
+                            <span> سلامت</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=ورزش">
+                            <i class="mdi mdi-rowing mdi-18px me-1 align-text-bottom"></i>
+                            <span>ورزش</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=مهاجرت">
+                            <i class="mdi mdi-airport mdi-18px me-1 align-text-bottom"></i>
+                            <span>مهاجرت</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=توسعه فردی">
+                            <i class="mdi mdi-human-handsup mdi-18px me-1 align-text-bottom"></i>
+                            <span> توسعه فردی</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=کودک و نوجوان">
+                            <i class="mdi mdi-baby mdi-18px me-1 align-text-bottom"></i>
+                            <span>کودک و نوجوان</span>
+                        </a>
+                    </li><!--end nav-item-->
+                </ul><!--end nav-->
+            </div><!--end sidebarAnalytics-->
+        </li><!--end nav-item-->
+    </ul><!--end navbar-nav--->
+
+    <!-- Navigation -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="#sidebarFinance" data-bs-toggle="collapse" role="button"
+               aria-expanded="false" aria-controls="sidebarAnalytics">
+                اقتصاد و حسابداری
+            </a>
+            <div class="collapse " id="sidebarFinance">
+                <ul class="nav flex-column">
+                    {% if category.title == 'اقتصاد و حسابداری' %}
+                        <a href="{% url 'search' %}"></a>
+                    {% endif %}
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=بورس">
+                            <i class="mdi mdi-chart-line mdi-18px me-1 align-text-bottom"></i>
+                            <span>بورس</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=مالی و حسابداری">
+                            <i class="mdi mdi-finance mdi-18px me-1 align-text-bottom"></i>
+                            <span>مالی و حسابداری</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=سرمایه گذاری">
+                            <i class="mdi mdi-bank mdi-18px me-1 align-text-bottom"></i>
+                            <span>سرمایه گذاری</span>
+                        </a>
+                    </li><!--end nav-item-->
+                </ul><!--end nav-->
+            </div><!--end sidebarAnalytics-->
+        </li><!--end nav-item-->
+    </ul><!--end navbar-nav--->
+
+    <!-- Navigation -->
+    <ul class="navbar-nav">
+        <li class="nav-item">
+            <a class="nav-link" href="#sidebarWork" data-bs-toggle="collapse" role="button"
+               aria-expanded="false" aria-controls="sidebarAnalytics">
+                مدیریت کسب کار
+            </a>
+            <div class="collapse " id="sidebarWork">
+                <ul class="nav flex-column">
+                     {% if category.title == 'مدیریت کسب کار' %}
+                        <a href="{% url 'search' %}"></a>
+                    {% endif %}
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=کارآفرینی">
+                            <i class="mdi mdi-parachute-outline mdi-18px me-1 align-text-bottom"></i>
+                            <span>کارآفرینی</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=دیجیتال مارکتینگ">
+                            <i class="mdi mdi-bullhorn-outline mdi-18px me-1 align-text-bottom"></i>
+                            <span>دیجیتال مارکتینگ</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=بازاریابی و فروش">
+                            <i class="mdi mdi-cart-plus mdi-18px me-1 align-text-bottom"></i>
+                            <span>  بازاریابی و فروش</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=مدیریت پروژه">
+                            <i class="mdi mdi-chart-timeline mdi-18px me-1 align-text-bottom"></i>
+                            <span>مدیریت پروژه</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=مدیریت محصول">
+                            <i class="mdi mdi-certificate mdi-18px me-1 align-text-bottom"></i>
+                            <span> مدیریت محصول</span>
+                        </a>
+                    </li><!--end nav-item-->
+                    <li class="nav-link">
+                        <a class="icon-dual-2" href="{% url 'search' %}?link=تحلیل کسب کار">
+                            <i class="mdi mdi-chart-bar-stacked mdi-18px me-1 align-text-bottom"></i>
+                            <span>تحلیل کسب کار </span>
+                        </a>
+                    </li><!--end nav-item-->
+                </ul><!--end nav-->
+            </div><!--end sidebarAnalytics-->
+        </li><!--end nav-item-->
+        <li class="nav-link">
+            <a class="icon-dual-2" href="{% url 'search' %}?link=زبان خارجی">
+                <i class="mdi mdi-translate mdi-18px me-1 align-text-bottom"></i>
+                <span> زبان خارجی</span>
+            </a>
+        </li><!--end nav-item-->
+        <li class="nav-link">
+            <a class="icon-dual-2" href="{% url 'search' %}?link=پادکست">
+                <i class="mdi mdi-podcast mdi-18px me-1 align-text-bottom"></i>
+                <span>پادکست</span>
+            </a>
+        </li><!--end nav-item-->
+        <li class="nav-link">
+            <a class="icon-dual-2" href="{% url 'quote' %}">
+                <i class="mdi mdi-format-quote-close mdi-18px me-1 align-text-bottom"></i>
+                <span> نقل قول ها</span>
+            </a>
+        </li><!--end nav-item-->
+
+    </ul><!--end navbar-nav--->
+
+</div><!--end sidebarCollapse-->

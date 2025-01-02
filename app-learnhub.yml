@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  learnhub:
+    environment:
+      - DATABASE_PATH=/app/database/db.sqlite3
+      - SECRET_KEY=django-insecure-6s+quyy2dcuawnmdd%z-vzbgr_!6ti2zm1bcx4#ekn67jaemw8
+      # - ALLOWED_HOSTS=localhost,127.0.0.1
+      - ADMIN_PAGE=admin-panel
+      - DEBUG=False
+    container_name: app-learnhub
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - /vol/media:/app/media
+      - /vol/static:/app/static
+      - /vol/database:/app/database
+    expose:
+      - "8000"
+    entrypoint: >
+      sh -c "
+      python manage.py makemigrations &&
+      python manage.py migrate &&
+      python manage.py collectstatic --noinput &&
+      gunicorn --bind 0.0.0.0:8000 learnhub.wsgi:application
+      "
+
+  nginx:
+    container_name: app-nginx
+    build: ./nginx
+    ports:
+      - "80:80"
+    volumes:
+      - /vol/media:/app/media
+      - /vol/static:/app/static
+    depends_on:
+      - learnhub

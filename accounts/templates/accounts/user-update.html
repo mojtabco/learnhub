@@ -1,0 +1,482 @@
+{% extends "core/layout/main.html" %}
+{% load static %}
+
+
+{% block ContentPage %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="page-wrapper">
+            <!-- Page Content-->
+            <div class="page-content-tab">
+
+                <div class="container-fluid ">
+                    <!-- Page-Title -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="page-title-box">
+                                <div class="float-end">
+                                    {% include "core/include/breadcrumb.html" with breadcrumbs=breadcrumbs %}
+                                </div>
+                                <h4 class="page-title">
+                                    ویرایش کاربر
+                                </h4>
+                            </div>
+                            <!--end page-title-box-->
+                        </div>
+                        <!--end col-->
+                    </div>
+                    <!-- end page title end breadcrumb -->
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="card shadow-danger">
+
+                                <div class="card-header ">
+                                    <div class="row align-items-start ">
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table style="width: 100%;" class="table mb-0">
+
+                                                    <tbody>
+                                                    <tr>
+                                                        <td style="width: 5%; height: 50px;" class="text-start">
+                                                            {% if profile.profile_picture %}
+                                                                <img src="{{ profile.profile_picture.url }}" alt="..."
+                                                                     class="rounded-3 thumb-md me-1">
+                                                            {% else %}
+                                                                <img src="{% static 'assets/images/default/default-profile-picture.jpg' %}"
+                                                                     alt="..."
+                                                                     class="rounded-3 thumb-md me-1">
+                                                            {% endif %}
+                                                        </td>
+                                                        <td style="width: 20%; height: 50px;" class="text-start">
+                                                            {{ profile.user }}
+                                                        </td>
+                                                        <td style="width: 75%; height: 50px;" class="text-start">
+                                                            {{ profile.user.get_full_name }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table><!--end /table-->
+                                            </div><!--end /tableresponsive-->
+                                        </div><!--end col-->
+
+                                        <div class="col-auto pt-2">
+                                            <div class="align-self-center">
+                                                <button type="button" class="btn btn-de-danger btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModalDelete">
+                                                    <i class="mdi mdi-delete me-1"></i>
+                                                    حذف
+                                                </button>
+                                                {% if  course_count == 0 %}
+                                                    {% if not profile.user.is_superuser %}
+                                                        {% include "core/include/message-delete.html" with Icon='delete' Title='  با انجام این کار کاربر حذف میشود، با ادامه کار موافق هستید ؟' Windows='ویرایش اطلاعات کاربر' Description=' با انجام این کار کاربر حذف میشود' Okay=True %}
+                                                    {% else %}
+                                                        {% include "core/include/message-delete.html" with Icon='warning' Title='  امکان پاک کردن کاربران با دسترسی مدیر وجود ندارد.' Windows='ویرایش اطلاعات کاربر' Description=' با مدیر سایت تماس بگیرید' Okay=False %}
+                                                    {% endif %}
+                                                {% else %}
+                                                    {% include "core/include/message-delete.html" with Icon='warning' Title=' به دلیل داشتن محتوا آموزشی این کاربر قابل  پاک شدن نیست.' Windows='ویرایش اطلاعات کاربر' Description=' این کاربر دارای  محتوا آموزشی است' Okay=False %}
+                                                {% endif %}
+
+                                                <button type="button" class="btn btn-de-danger btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModalAccess">
+                                                    <i class="mdi mdi-security me-1"></i>
+                                                    دسترسی
+                                                </button>
+                                                <div class="modal fade" id="exampleModalAccess" tabindex="-1"
+                                                     aria-labelledby="exampleModalAccessLabel" style="display: none;"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog " role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h6 class="modal-title m-0"
+                                                                    id="exampleModalAccessTitle">
+                                                                    تغییر دسترسی دوره
+                                                                </h6>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div><!--end modal-header-->
+                                                            <div class="modal-body">
+
+                                                                <div class="mt-1">
+                                                                    <label class="mb-2">دسترسی های کاربر </label>
+                                                                    {{ form_access.access_users }}
+                                                                </div>
+
+                                                                <div class="mt-4 ">
+                                                                    <label class="mb-2">عضویت در گروه ها</label>
+                                                                    {{ form_access.access_groups }}
+                                                                </div>
+                                                                <div class="mt-2">
+                                                                      <span class="text-start btn btn-soft-primary btn-sm">
+                                                                          "Ctrl"  را در ویندوز یا "Command" را در Mac نگه دارید تا بیش از یک مورد را انتخاب کنید.
+                                                                      </span>
+                                                                </div>
+                                                            </div><!--end modal-content-->
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-de-success "
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button type="submit"
+                                                                        name="action"
+                                                                        class="btn btn-de-primary "
+                                                                        value="OkayAccess">
+                                                                    Okay
+                                                                </button>
+                                                            </div><!--end modal-footer-->
+                                                        </div><!--end modal-content-->
+                                                    </div><!--end modal-dialog-->
+                                                </div><!--end modal-->
+
+                                                <button type="button" class="btn btn-de-success btn-sm"
+                                                        data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModalResetPassword">
+                                                    <i class="mdi mdi-textbox-password me-1"></i>
+                                                    ریست رمز عبور
+                                                </button>
+                                                <div class="modal fade" id="exampleModalResetPassword" tabindex="-1"
+                                                     aria-labelledby="exampleModalAccessLabel" style="display: none;"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog " role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h6 class="modal-title m-0"
+                                                                    id="exampleModalAccessTitle">
+                                                                    تغییر رمز عبور کاربر
+                                                                </h6>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div><!--end modal-header-->
+                                                            <div class="modal-body">
+
+                                                                <div class="form-group mb-3 row">
+                                                                    <label class="col-xl-3 col-lg-3 text-end text-dark align-self-center form-label">رمز
+                                                                        عبور
+                                                                        جدید
+                                                                    <code class="ms-1">*</code>
+                                                                    </label>
+                                                                    <div class="col-lg-9 col-xl-8">
+                                                                        <input class="form-control"
+                                                                               id="password"
+                                                                               name="password"
+                                                                               type="password"
+                                                                               placeholder="رمز عبور جدید وارد کنید ">
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="form-group mb-3 row">
+                                                                    <label class="col-xl-3 col-lg-3 text-end text-dark mb-lg-0 align-self-center form-label">تکرار
+                                                                        رمز عبور
+                                                                    <code class="ms-1">*</code>
+                                                                    </label>
+                                                                    <div class="col-lg-9 col-xl-8">
+                                                                        <input class="form-control"
+                                                                               id="confirm_password"
+                                                                               name="confirm_password"
+                                                                               type="password"
+                                                                               placeholder="مجدد رمز عبور وارد نمایید ">
+                                                                    </div>
+                                                                </div>
+                                                            </div><!--end modal-content-->
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-de-success "
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button type="submit"
+                                                                        name="action"
+                                                                        class="btn btn-de-primary "
+                                                                        value="OkayPassword">
+                                                                    Okay
+                                                                </button>
+                                                            </div><!--end modal-footer-->
+                                                        </div><!--end modal-content-->
+                                                    </div><!--end modal-dialog-->
+                                                </div><!--end modal-->
+
+                                                <button type="button" class="btn btn-de-success btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModalUpdate">
+                                                    <i class="mdi mdi-square-edit-outline me-2"></i>
+                                                    ویرایش
+                                                </button>
+                                                <div class="modal fade" id="exampleModalUpdate" tabindex="-1"
+                                                     aria-labelledby="exampleModalUpdateLabel" style="display: none;"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header ">
+                                                                <h6 class="modal-title m-0"
+                                                                    id="exampleModalUpdateTitle">ویرایش کاربر </h6>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label class="mb-2">ویرایش اطلاعات کاربر</label>
+                                                                    <div class="input-group ">
+                                                                        <span class="input-group-text">نام</span>
+                                                                        {{ form_user.first_name }}
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="mb-3">
+                                                                    <div class="input-group ">
+                                                                        <span class="input-group-text">نام خانوادگی</span>
+                                                                        {{ form_user.last_name }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-text"><i
+                                                                            class="las la-phone"></i></span>
+                                                                        {{ form.phone_number }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-text"><i
+                                                                            class="las la-at"></i></span>
+                                                                        {{ form.email }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">W</span>
+                                                                        {{ form.website }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <div class="input-group">
+                                                                     <span class="input-group-text"><i
+                                                                             class="las la-user"></i>
+                                                                        </span>
+                                                                        {{ form.gender }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <div class="form-check form-switch form-switch-danger">
+                                                                        {% if not profile.user.is_superuser %}
+                                                                            {{ form_user.is_active }}
+                                                                        {% else %}
+                                                                            <input type="checkbox" name="is_active"
+                                                                                   class="form-check-input"
+                                                                                   aria-describedby="id_is_active_helptext"
+                                                                                   id="id_is_active" disabled>
+                                                                        {% endif %}
+                                                                        <label class="form-check-label"
+                                                                               for="is_published">
+                                                                            وضعیت کاربر
+                                                                        </label>
+                                                                    </div>
+                                                                </div><!--end modal-body-->
+                                                                <div class="mb-3">
+                                                                    <div class="form-check form-switch form-switch-danger">
+                                                                        {{ form.is_published }}
+                                                                        <label class="form-check-label"
+                                                                               for="is_published">
+                                                                            اشتراک گذاشتن محتوا های کاربر
+                                                                        </label>
+                                                                    </div>
+                                                                </div><!--end modal-body-->
+                                                                <div class="mt-3">
+                                                                    <label class="mb-2">انتخاب عکس پروفایل</label>
+                                                                    {{ form.profile_picture }}
+                                                                </div>
+
+
+                                                            </div><!--end modal-content-->
+                                                            <div class="modal-footer">
+                                                                <button class="btn btn-de-success "
+                                                                        data-bs-dismiss="modal">
+                                                                    Close
+                                                                </button>
+                                                                <button type="submit" name="action"
+                                                                        class="btn btn-de-primary "
+                                                                        value="OkayUpdate">
+                                                                    Okay
+                                                                </button>
+
+                                                            </div><!--end modal-footer-->
+                                                        </div><!--end modal-dialog-->
+                                                    </div><!--end modal-->
+                                                </div>
+
+                                                <a class="btn btn-blue btn-sm" href="{% url 'users' %}">
+                                                    <i class="mdi mdi-redo-variant me-1"></i>
+                                                    برگشت
+                                                </a>
+                                            </div><!--end col-->
+                                        </div>  <!--end row-->
+                                    </div>
+
+                                    <div class="form-check form-check-inline pt-3 ">
+                                        <div>
+                                            {% if profile.user.is_superuser %}
+                                                <input class="form-check-input"
+                                                       name="is_superuser"
+                                                       type="checkbox"
+                                                       id="id_is_superuser"
+                                                       checked
+                                                       onclick="return false;"
+                                                       style="pointer-events: none;">
+                                            {% else %}
+                                                <input class="form-check-input"
+                                                       name="is_superuser"
+                                                       type="checkbox"
+                                                       id="id_is_superuser"
+                                                       onclick="return false;"
+                                                       style="pointer-events: none;">
+                                            {% endif %}
+                                            <label class="form-check-label" for="inlineCheckboxSuperuser">Superuser
+                                                status</label>
+                                        </div>
+                                        <div>
+                                            <span class="text-start">
+                                                  این کاربر همه مجوزها را بدون اختصاص دادن صریح دارد.
+                                           </span>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-check form-check-inline pt-2">
+                                        <div>
+                                            {% if profile.user.is_staff %}
+                                                <input class="form-check-input"
+                                                       name="is_staff"
+                                                       type="checkbox"
+                                                       id="id_is_staff"
+                                                       checked
+                                                       onclick="return false;"
+                                                       style="pointer-events: none;">
+                                            {% else %}
+                                                <input class="form-check-input"
+                                                       name="is_staff"
+                                                       type="checkbox"
+                                                       id="id_is_staff"
+                                                       onclick="return false;"
+                                                       style="pointer-events: none;">
+                                            {% endif %}
+
+                                            <label class="form-check-label" for="inlineCheckboxStaff">Staff
+                                                status</label>
+                                        </div>
+                                        <div>
+                                            <span class=" text-start">
+                                               کاربر می تواند به عنوان مدیر سایت وارد شود.
+                                           </span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="card-body">
+                                    <div class="table-responsive" style="max-height: 250px; overflow-y: auto;">
+                                        <table class="table mb-0">
+                                            <thead class="thead-light">
+                                            <tr>
+                                                <th class="text-center">وضعیت کاربر</th>
+                                                <th class="text-center"> دسترسی ها</th>
+                                                <th class="text-center">عضویت در گروه</th>
+                                                <th class="text-center">وضعیت اشتراک محتوای</th>
+                                                <th class="text-center">تعداد دوره ها</th>
+                                                <th class="text-center">فایل های کاربر</th>
+                                            </tr><!--end tr-->
+                                            </thead>
+
+                                            <tbody>
+                                            {% if profile %}
+
+                                                <tr>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {% if profile.user.is_active %}
+                                                            <span class="badge badge-md badge-soft-success">
+                                                                    فعال
+                                                                </span>
+                                                        {% else %}
+                                                            <span class="badge badge-md badge-soft-danger">
+                                                                    غیرفعال
+                                                                </span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+
+                                                        {% for access_user in profile.access_users.all %}
+                                                            <option value="{{ access_user.id }}">
+                                                                <span class="badge badge-md badge-soft-primary">
+                                                                        {{ access_user }}
+                                                                </span>
+                                                            </option>
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {% for access_groups in profile.access_groups.all %}
+                                                            <option value="{{ access_groups.id }}">
+                                                            <span class="badge badge-md badge-soft-primary">
+                                                                        {{ access_groups }}
+                                                            </span>
+                                                            </option>
+                                                        {% endfor %}
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {% if profile.is_published %}
+                                                            <span class="badge badge-md badge-soft-success">
+                                                                    دردسترس
+                                                                </span>
+                                                        {% else %}
+                                                            <span class="badge badge-md badge-soft-danger">
+                                                                    غیرفعال
+                                                                </span>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {{ course_count }}
+
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {% if course_count != 0 %}
+                                                            <span>
+                                                                <a href="{% url 'mycourse-admin-user' profile.user.id %}"
+                                                                   class="btn btn-sm btn-soft-primary">مشاهده
+                                                                    <i class="las la-external-link-alt font-15"></i></a>
+                                                            </span>
+                                                        {% else %}
+                                                            <span>
+                                                                <a href="#"
+                                                                   class="btn btn-sm btn-soft-primary">مشاهده
+                                                                    <i class="las la-external-link-alt font-15"></i></a>
+                                                            </span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+
+                                            {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                </div><!--end card-body-->
+
+                            </div>
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    {% include "core/include/message.html" with TitlePage=" پروفایل کاربر " %}
+                </div><!-- container -->
+
+            </div>
+            <!-- end page content -->
+        </div>
+        <!-- end page-wrapper -->
+
+    </form>
+{% endblock %}
+
+{% block Javascript %}
+    {% include "core/include/script.html" %}
+    <script src="{% static 'assets/js/click-authentication-tab.js' %}"></script>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% load static %}
+<div class="topbar">
+    <!-- Navbar -->
+    <nav class="navbar-custom" id="navbar-custom">
+        <ul class="list-unstyled topbar-nav float-end mb-0">
+
+            <li class="dropdown">
+                <a class="nav-link dropdown-toggle nav-user" data-bs-toggle="dropdown" href="#" role="button"
+                   aria-haspopup="false" aria-expanded="false">
+                    <div class="d-flex align-items-center">
+
+                        <div>
+                            {% if user.is_authenticated %}
+                                <span class="d-none d-md-block fw-semibold font-12">
+                                {% if user.first_name or user.last_name %}
+                                    <strong class="pe-2">  {{ user.get_full_name }} </strong>
+                                    {% if user.profileuser.profile_picture %}
+                                        <img src="{{ user.profileuser.profile_picture.url }}" alt="..."
+                                             class="rounded-circle me-2 thumb-sm"/>
+                                    {% else %}
+                                        <img src="{% static 'assets/images/default/default-profile-picture.jpg' %}" alt="..."
+                                             class="rounded-circle me-2 thumb-sm"/>
+                                    {% endif %}
+                                {% else %}
+                                    <strong class="pe-2">   {{ user.username }} </strong>
+                                     {% if user.profileuser.profile_picture %}
+                                        <img src="{{ user.profileuser.profile_picture.url }}" alt="..."
+                                             class="rounded-circle me-2 thumb-sm"/>
+                                    {% else %}
+                                        <img src="{% static 'assets/images/default/default-profile-picture.jpg' %}" alt="..."
+                                             class="rounded-circle me-2 thumb-sm"/>
+                                    {% endif %}
+                                {% endif %}
+
+                            {% else %}
+                                <span class="d-none d-md-block fw-semibold font-12">
+                                <strong class="pe-2">    کاربر مهمان </strong>
+                                <img src="{% static 'assets/images/default/default-icon-sm.png' %}" alt="profile-user"
+                                     class="rounded-circle me-2 thumb-sm"/>
+
+                            {% endif %}
+                            <i class="mdi mdi-chevron-double-down text-primary"></i></span>
+                        </div>
+                    </div>
+
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                    {% if user.is_authenticated %}
+                        <a class="dropdown-item" href="{% url 'profile' %}"><i
+                                class="ti ti-user font-16 me-1 align-text-bottom"></i> پروفایل</a>
+                        <a class="dropdown-item" href="{% url 'profile' %}"><i
+                                class="ti ti-barcode font-16 me-1 align-text-bottom"></i> تغییر رمز عبور</a>
+                        <a class="dropdown-item" href="{% url 'lockscreen' %}"><i
+                                class="ti ti-lock font-16 me-1 align-text-bottom"></i> قفل کردن</a>
+                        <div class="dropdown-divider mb-0"></div>
+                        <a class="dropdown-item" href="{% url 'logout' %}"><i
+                                class="ti ti-power font-16 me-1 align-text-bottom"></i> خروج</a>
+                    {% else %}
+                        <a class="dropdown-item" href="{% url 'login' %}"><i
+                                class="ti ti-login font-16 me-1 align-text-bottom"></i> ورود</a>
+                        <a class="dropdown-item" href="{% url 'recover' %}"><i
+                                class="ti ti-login font-16 me-1 align-text-bottom"></i> بازیابی رمزعبور</a>
+                        <div class="dropdown-divider mb-0"></div>
+                        <a class="dropdown-item" href="{% url 'register' %}"><i
+                                class="ti ti-user-plus font-16 me-1 align-text-bottom"></i> ثبت نام</a>
+                    {% endif %}
+
+                </div>
+            </li><!--end topbar-profile-->
+
+        </ul><!--end topbar-nav-->
+
+        <ul class="list-unstyled topbar-nav mb-0">
+            <li>
+                <button class="nav-link button-menu-mobile nav-icon" id="togglemenu">
+                    <i class="ti ti-menu-2"></i>
+                </button>
+            </li>
+
+        </ul>
+    </nav>
+    <!-- end navbar-->
+</div>

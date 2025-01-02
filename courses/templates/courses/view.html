@@ -1,0 +1,488 @@
+{% extends "core/layout/main.html" %}
+{% load static %}
+
+{% block ContentPage %}
+
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content-tab">
+
+            <div class="container-fluid">
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="float-end">
+                                {% include "core/include/breadcrumb.html" with breadcrumbs=breadcrumbs %}
+                            </div>
+
+                        </div><!--end page-title-box-->
+                    </div><!--end col-->
+                </div>
+                <!-- end page title end breadcrumb -->
+                <div class="row mt-2">
+                    <div class="col-12">
+                        <div class="card shadow-info">
+
+                            <div class="card-header">
+                                <div class="row align-items-end">
+                                    <div class="col">
+                                        <div class="table-responsive">
+                                            <table style="width: 100%;" class="table mb-0">
+
+                                                <tbody>
+                                                <tr>
+                                                    <td style="width: 5%; height: 50px;" class="text-center">
+                                                        {% if course.thumbnail %}
+                                                            <img src="{{ course.thumbnail.url }}" alt="..."
+                                                                 class="rounded-3  me-1"
+                                                                 style=" width: 100px; height: 90px; object-position: center;">
+                                                        {% else %}
+                                                            <img src="{% static 'assets/images/default/default-cover.gif' %}"
+                                                                 alt="..."
+                                                                 class="rounded-3  me-1"
+                                                                 style=" width: 100px; height: 90px; object-position: center;">
+                                                        {% endif %}
+                                                    </td>
+                                                    <td style="width: 95%; height: 50px;" class="text-start">
+                                                        <h5 class="float-right text-truncate  fw-bold"> {{ course.title }}</h5>
+                                                        <strong class="float-right text-muted fw-bold">{{ course.description }}</strong>
+                                                    </td>
+
+                                                </tr>
+                                                </tbody>
+                                            </table><!--end /table-->
+                                        </div><!--end /tableresponsive-->
+                                    </div><!--end col-->
+                                    <div class="col-auto">
+
+                                        <div class="align-self-center">
+                                            <a class="btn btn-de-blue btn-sm" href="{% url 'mycourse' %}">
+                                                <i class="mdi mdi-firebase me-1"></i>
+                                                فایل های من
+                                            </a>
+
+                                            <a class="btn btn-blue btn-sm" href="{% url 'search' %}">
+                                                <i class="mdi mdi-redo-variant me-1"></i>
+                                                برگشت
+                                            </a>
+
+                                        </div>
+
+
+                                    </div><!--end col-->
+                                </div>  <!--end row-->
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+
+                                    <div class="col-lg-8">
+                                        <div class="card ">
+                                            <div class="card-body">
+                                                <!-- 16:9 aspect ratio -->
+                                                <div class="ratio ratio-16x9">
+                                                    {% if video_lesson.lesson_content.name|slice:"-3:" == "mp3" %}
+
+                                                        <video controls width="560" height="315"
+                                                               preload="metadata"
+                                                               poster={% static 'assets/images/default/default-music.jpg' %}
+                                                                       src="{{ video_lesson.lesson_content.url }}"
+
+                                                               title="audio"
+                                                               allowfullscreen>
+
+                                                        </video>
+                                                    {% else %}
+                                                        <video controls width="560" height="315"
+                                                               preload="metadata"
+                                                               src="{{ video_lesson.lesson_content.url }}"
+                                                               title="video"
+                                                               allowfullscreen>
+
+                                                        </video>
+                                                    {% endif %}
+                                                </div>
+
+                                            </div><!--end card-body-->
+                                            <div id="actions ">
+
+                                                <div class="card-body col-12">
+
+                                                    <div class="media-body float-end">
+                                                        <div class="btn-group btn-group-crop ">
+                                                            <a href="#" class="like-href"
+                                                               data-href-template="{% url 'lesson_like' video_lesson.id|default:0 %}">
+                                                                <input type="hidden" name="csrfmiddlewaretoken"
+                                                                       value="{{ csrf_token }}">
+
+                                                                {% if user in video_lesson.likes.all %}
+                                                                    <button type="button"
+                                                                            class="btn btn-blue btn-sm me-2"
+                                                                            id="thumbs-up">
+                                                                        <i data-feather="thumbs-up"
+                                                                           class="align-self-center icon-xs me-0"></i>
+                                                                        <span class="like-count">{{ video_lesson.total_likes }}</span>
+                                                                    </button>
+                                                                {% else %}
+                                                                    <button type="button"
+                                                                            class="btn btn-de-blue btn-sm me-2"
+                                                                            id="thumbs-up">
+                                                                        <i data-feather="thumbs-up"
+                                                                           class="align-self-center icon-xs me-0"></i>
+                                                                        <span class="like-count">{{ video_lesson.total_likes }}</span>
+                                                                    </button>
+                                                                {% endif %}
+                                                            </a>
+
+                                                            <a href="#" class="lesson-completed-href"
+                                                               data-href-template="{% url 'lesson_completed' video_lesson.id|default:0 %}">
+                                                                {% if course.certified %}
+                                                                    {% if user in video_lesson.completed.all %}
+                                                                        <button type="button"
+                                                                                class="btn btn-primary btn-sm"
+                                                                                id="lesson-completed"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="bottom"
+                                                                                title="درس به اتمام رسید">
+                                                                            <i data-feather="check-square"
+                                                                               class="align-self-center icon-xs me-0"></i>
+                                                                        </button>
+                                                                    {% else %}
+                                                                        <button type="button"
+                                                                                class="btn btn-de-primary btn-sm"
+                                                                                {# if btn-de-primary #}
+                                                                                id="lesson-completed"
+                                                                                data-bs-toggle="tooltip"
+                                                                                data-bs-placement="bottom"
+                                                                                title="درس به اتمام رسید">
+                                                                            <i data-feather="check-square"
+                                                                               class="align-self-center icon-xs me-0"></i>
+                                                                        </button>
+                                                                    {% endif %}
+                                                                {% endif %}
+                                                            </a>
+                                                            <button type="button" class="btn btn-de-blue btn-sm"
+                                                                    id="share">
+                                                                <i data-feather="share-2"
+                                                                   class="align-self-center icon-xs me-0"></i>
+                                                            </button>
+
+                                                        </div>
+                                                        {% if user_has_download_access or user_has_all_access %}
+                                                            <a href="{{ video_lesson.lesson_content.url }}"
+                                                               class="btn btn-de-danger btn-sm" download>
+                                                                <i data-feather="download"
+                                                                   class="align-self-center icon-xs me-2"></i>دانلود
+                                                            </a>
+                                                        {% endif %}
+                                                    </div>
+
+                                                    <div class="card-body">
+                                                        <h5 class="float-right text-truncate  fw-bold">{{ video_lesson.title }}</h5>
+                                                        <strong class="float-right text-muted fw-bold">{{ video_lesson.description }}</strong>
+                                                    </div>
+
+                                                </div><!--end card-body-->
+
+                                            </div>
+                                        </div><!--end card-->
+
+                                        <div class="card ">
+                                            <div class="card-body ">
+                                                <div class="row">
+
+                                                    {% if completed_lessons == lessons_data|length %}
+                                                        <h5 class="font-18 mt-0 ">
+                                                            <span class="badge badge-soft-primary p-2">
+                                                               تبریک! شما این دوره را با موفقیت به پایان رساندید!
+                                                            </span>
+                                                            <span class="badge badge-soft-primary p-2 mt-2">
+                                                               با پشتکار و تلاشی که نشان دادید، اکنون مهارت‌ها و دانشی ارزشمند کسب کرده‌اید. امیدواریم آنچه آموختید در مسیر موفقیت و رشد شما تأثیرگذار بوده باشد.
+                                                            </span>
+                                                        </h5>
+                                                    {% else %}
+                                                        {% if completed_lessons %}
+                                                            <div class="col-12 d-flex align-items-center">
+                                                                <h6 class="font-15 mt-0 ">
+                                                            <span class="badge badge-soft-primary p-2">
+                                                                {{ completed_lessons }}
+                                                                درس از
+                                                                 {{ lessons_data|length }}
+                                                                درس را با موفقیت پشت سر گذاشته‌اید.
+                                                            </span>
+                                                                </h6>
+                                                            </div><!--end col-->
+                                                            <div class="col-12 d-flex align-items-center">
+                                                                <i class="mdi mdi-certificate mdi-36px text-warning me-2"></i>
+                                                                <div class="progress"
+                                                                     style="height: 14px; width: 100%; direction: ltr;">
+                                                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                                         role="progressbar"
+                                                                         style="width:{{ course_progress_percentage|floatformat:0 }}%;"
+                                                                         aria-valuenow="0" aria-valuemin="0"
+                                                                         aria-valuemax="100">
+                                                                        %{{ course_progress_percentage|floatformat:0 }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% else %}
+                                                            <h5 class="font-18 mt-0 ">
+                                                            <span class="badge badge-soft-primary p-2">
+                                                                آماده‌اید برای یادگیری؟
+                                                            </span>
+                                                                <span class="badge badge-soft-primary p-2 mt-2">
+                                                            شما هنوز این آموزش را شروع نکرده‌اید. همین حالا اولین درس را شروع کنید و به سفری از دانش و مهارت وارد شوید! یادگیری گامی کوچک برای پیشرفت و موفقیت است.
+                                                            </span>
+                                                            </h5>
+                                                        {% endif %}
+
+                                                    {% endif %}
+
+                                                </div><!--end row-->
+                                            </div><!--end card-body-->
+
+                                        </div><!--end card-->
+                                    </div> <!-- end col -->
+
+                                    <div class="col-lg-4 ">
+
+                                        <div class="card ">
+
+                                            <div class="card-body mb-n4">
+
+                                                <div class="dropdown d-inline-block float-end mt-n2">
+                                                    <a class="nav-link dropdown-toggle arrow-none" id="drop1"
+                                                       data-bs-toggle="dropdown" href="#" role="button"
+                                                       aria-haspopup="false"
+                                                       aria-expanded="false">
+                                                        <i class="fas fa-ellipsis-v font-14 text-muted"></i>
+                                                    </a>
+                                                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="drop1"
+                                                         style="">
+                                                        <a class="dropdown-item" href="#"><i
+                                                                class="ti ti-bookmark font-16 me-1 align-text-bottom"></i>ذخیره
+                                                            در
+                                                            انتخاب های من</a>
+                                                    </div>
+                                                </div> <!--three point row-->
+
+                                                <div class="row">
+                                                    <div class="col ">
+                                                        <div class="card-body col-12">
+
+
+                                                        </div><!--end card-body-->
+                                                    </div><!--end col-->
+
+                                                </div> <!--end row-->
+                                            </div><!--end card-body-->
+
+                                            <div class="card-body">
+                                                {% if seasons_data %}
+                                                    {% for season in seasons_data %}
+                                                        {# برای فصل اول#}
+                                                        {% if video_season == season %}
+                                                            <div class="accordion"
+                                                                 id="accordionExample{{ season.order }}">
+                                                                <div class="accordion-item">
+                                                                    <h5 class="accordion-header m-0" id="headingOne">
+                                                                        <button class="accordion-button fw-semibold show"
+                                                                                type="button"
+                                                                                data-bs-toggle="collapse"
+                                                                                data-bs-target="#collapse{{ season.order }}"
+                                                                                aria-expanded="true"
+                                                                                aria-controls="collapse{{ season.order }}">
+
+                                                                            {{ season.title }}
+
+                                                                        </button>
+                                                                    </h5>
+                                                                    <div id="collapse{{ season.order }}"
+                                                                         class="accordion-collapse show"
+                                                                         aria-labelledby="heading{{ season.order }}"
+                                                                         data-bs-parent="#accordionExample{{ season.order }}"
+                                                                         style="">
+                                                                        <div class="accordion-body">
+
+                                                                            <div class="table-responsive ">
+                                                                                <table class="table table-hover mb-2">
+                                                                                    {% if season.lesson_count ==  0 %}
+                                                                                        <tbody>
+                                                                                        <tr>
+                                                                                            <td>
+                                                                                                <span class="badge badge-soft-danger  fw-semibold ms-2">
+                                                                                                 <i class=""></i>محتوایی برای این فصل وجود ندارد</span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        </tbody>
+                                                                                    {% else %}
+                                                                                        <tbody>
+                                                                                        {% for lesson in lessons_data %}
+                                                                                            {% if lesson.course_season == season %}
+                                                                                                <tr>
+                                                                                                    <th style="width: 10%; height: 50px;"
+                                                                                                        class="text-start"
+                                                                                                        scope="row">
+                                                                                                         <span class="badge badge-soft-blue   ms-0">
+                                                                                                              {{ lesson.order }}
+                                                                                                         </span>
+                                                                                                    </th>
+                                                                                                    <td style="width: 70%; height: 50px;"
+                                                                                                        class="text-start">
+                                                                                                        <a href="{% url 'view' course.id lesson.id %}">
+                                                                                                            {{ lesson.title|truncatewords:20 }}
+                                                                                                        </a>
+                                                                                                    </td>
+                                                                                                    <td style="width: 10%; height: 50px;"
+                                                                                                        class="text-end">
+                                                                                                        {% if user in lesson.completed.all %}
+                                                                                                            <i class="mdi mdi-check-decagram mdi-18px text-primary ml-1"></i>
+                                                                                                        {% endif %}
+                                                                                                    </td>
+                                                                                                    <td style="width: 10%; height: 50px;"
+                                                                                                        class="text-end">
+
+                                                                                                        {% if lesson.lesson_content.name|slice:"-3:" == "mp3" %}
+                                                                                                            <i class="mdi mdi-music-circle-outline mdi-18px text-success ml-1"></i>
+                                                                                                        {% else %}
+                                                                                                            <i class="mdi mdi-play-speed mdi-18px text-success ml-1"></i>
+                                                                                                        {% endif %}
+
+                                                                                                    </td>
+                                                                                                    <td style="width: 10%; height: 50px;"
+                                                                                                        class="text-end">
+                                                                                                       <span class="badge badge-soft-primary fw-semibold ms-2">
+                                                                                                          {{ lesson.duration }}
+                                                                                                          <i class="far fa-fw fa-clock"></i>
+                                                                                                       </span>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            {% endif %}
+                                                                                        {% endfor %}
+                                                                                        </tbody>
+                                                                                    {% endif %}
+                                                                                </table><!--end /table-->
+                                                                            </div><!--end /tableresponsive-->
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% else %}
+                                                            <div class="accordion"
+                                                                 id="accordionExample{{ season.order }}">
+                                                                <div class="accordion-item">
+                                                                    <h5 class="accordion-header m-0" id="headingOne">
+                                                                        <button class="accordion-button fw-semibold collapsed"
+                                                                                type="button"
+                                                                                data-bs-toggle="collapse"
+                                                                                data-bs-target="#collapse{{ season.order }}"
+                                                                                aria-expanded="false"
+                                                                                aria-controls="collapse{{ season.order }}">
+                                                                            {{ season.title }}
+                                                                        </button>
+                                                                    </h5>
+                                                                    <div id="collapse{{ season.order }}"
+                                                                         class="accordion-collapse collapse"
+                                                                         aria-labelledby="heading{{ season.order }}"
+                                                                         data-bs-parent="#accordionExample{{ season.order }}"
+                                                                         style="">
+                                                                        <div class="accordion-body">
+
+                                                                            <div class="table-responsive ">
+                                                                                <table class="table table-hover mb-2">
+                                                                                    {% if season.lesson_count ==  0 %}
+                                                                                        <tbody>
+                                                                                        <tr>
+                                                                                            <td style="width: 100%; height: 50px;"
+                                                                                                class="text-start">
+                                                                                                <span class="badge badge-soft-danger  fw-semibold ms-2">
+                                                                                                 <i class=""></i>محتوایی برای این فصل وجود ندارد</span>
+                                                                                            </td>
+                                                                                        </tr>
+                                                                                        </tbody>
+                                                                                    {% else %}
+                                                                                        <tbody>
+                                                                                        {% for lesson in lessons_data %}
+                                                                                            {% if lesson.course_season == season %}
+                                                                                                <tr>
+                                                                                                    <th style="width: 10%; height: 50px;"
+                                                                                                        class="text-start"
+                                                                                                        scope="row">
+                                                                                                         <span class="badge badge-soft-blue   ms-0">
+                                                                                                              {{ lesson.order }}
+                                                                                                         </span>
+                                                                                                    </th>
+                                                                                                    <td style="width: 70%; height: 50px;"
+                                                                                                        class="text-start">
+                                                                                                        <a href="{% url 'view' course.id lesson.id %}">
+                                                                                                            {{ lesson.title|truncatewords:20 }}
+                                                                                                        </a>
+                                                                                                    </td>
+                                                                                                    <td style="width: 10%; height: 50px;"
+                                                                                                        class="text-end">
+                                                                                                        {% if user in lesson.completed.all %}
+                                                                                                            <i class="mdi mdi-check-decagram mdi-18px text-primary ml-1"></i>
+                                                                                                        {% endif %}
+                                                                                                    </td>
+                                                                                                    <td style="width: 10%; height: 50px;"
+                                                                                                        class="text-end">
+                                                                                                        {% if lesson.lesson_content.name|slice:"-3:" == "mp3" %}
+                                                                                                            <i class="mdi mdi-music-circle-outline mdi-18px text-success ml-1"></i>
+                                                                                                        {% else %}
+                                                                                                            <i class="mdi mdi-play-speed mdi-18px text-success ml-1"></i>
+                                                                                                        {% endif %}
+                                                                                                    </td>
+                                                                                                    <td style="width: 10%; height: 50px;"
+                                                                                                        class="text-end">
+                                                                                                       <span class="badge badge-soft-primary fw-semibold ms-2">
+                                                                                                          {{ lesson.duration }}
+                                                                                                          <i class="far fa-fw fa-clock"></i>
+                                                                                                       </span>
+                                                                                                    </td>
+                                                                                                </tr>
+                                                                                            {% endif %}
+                                                                                        {% endfor %}
+                                                                                        </tbody>
+                                                                                    {% endif %}
+                                                                                </table><!--end /table-->
+                                                                            </div><!--end /tableresponsive-->
+
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+
+                                                    {% endfor %}
+                                                {% endif %}
+
+                                            </div><!--end card-body-->
+
+                                        </div>
+
+                                    </div> <!--end col-->
+                                </div><!--end row-->
+
+                            </div>
+
+                        </div>
+                    </div><!--end col-->
+
+                </div>
+
+            </div><!-- container -->
+
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+
+{% endblock %}
+
+{% block Javascript %}
+    {% include "core/include/script.html" %}
+    <script src="{% static 'assets/js/click-app-tab.js' %}"></script>
+    <script src="{% static 'assets/js/view-like.js' %}"></script>
+{% endblock %}
+

@@ -1,0 +1,44 @@
+<!--به نام خداوند جان و خرد-->
+<!-- هیچ نیرو و توانى جز از سوى خداوند بلندمرتبه و بزرگ نیست-->
+<!--پندار نیک، گفتار نیک، کردار نیک-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+    <!-- head -->
+    {% include "core/include/head.html" with TitlePage="LearnHub" %}
+
+    <body id="body">
+
+        <!-- leftbar-tab-menu -->
+        {% include "core/include/leftbar.html" %}
+        <!-- end leftbar-tab-menu-->
+
+        <!-- Top Bar Start -->
+        {% include "core/include/topbar.html" %}
+        <!-- Top Bar End -->
+
+        {% block ContentPage %}
+
+        {% endblock %}
+
+
+        <!--Start Rightbar/offcanvas-->
+        {% include "core/include/rightbar.html" %}
+        <!--end Rightbar/offcanvas-->
+
+
+        <!-- Footer Start -->
+        {% include "core/include/footer.html" %}
+        <!-- end Footer -->
+
+        <!-- Javascript  -->
+        <!-- vendor js -->
+
+        {% block Javascript %}
+
+        {% endblock %}
+
+
+    </body>
+    <!--end body-->
+</html>

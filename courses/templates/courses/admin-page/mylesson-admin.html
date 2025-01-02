@@ -1,0 +1,337 @@
+{% extends "core/layout/main.html" %}
+{% load static %}
+
+{% block ContentPage %}
+
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content-tab">
+
+            <div class="container-fluid">
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="float-end">
+                                {% include "core/include/breadcrumb.html" with breadcrumbs=breadcrumbs %}
+                            </div>
+                            <h4 class="page-title">
+                                محتوای دوره
+                            </h4>
+                        </div>
+                        <!--end page-title-box-->
+                    </div>
+                    <!--end col-->
+                </div>
+                <!-- end page title end breadcrumb -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-info">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="card-header">
+                                    <div class="row align-items-end">
+                                        <div class="col">
+                                            <div class="table-responsive">
+                                                <table style="width: 100%;" class="table mb-0">
+
+                                                    <tbody>
+                                                    <tr>
+                                                        <td style="width: 5%; height: 50px;" class="text-start">
+                                                            {% if course.thumbnail %}
+                                                                <img src="{{ course.thumbnail.url }}" alt="..."
+                                                                     class="rounded-3 thumb-md me-1">
+                                                            {% else %}
+                                                                <img src="{% static 'assets/images/default/default-cover.gif' %}"
+                                                                     alt="..."
+                                                                     class="rounded-3 thumb-md me-1">
+                                                            {% endif %}
+                                                        </td>
+                                                        <td style="width: 20%; height: 50px;" class="text-start">
+                                                            {{ course.title }}
+                                                        </td>
+                                                        <td style="width: 75%; height: 50px;" class="text-start">
+                                                            {{ course.description }}
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table><!--end /table-->
+                                            </div><!--end /tableresponsive-->
+                                        </div><!--end col-->
+                                        <div class="col-auto">
+
+                                            <div class="align-self-center">
+                                                <a class="btn btn-de-blue btn-sm" href="{% url 'mycourse-admin' %}">
+                                                    <i class="mdi mdi-firebase me-1"></i>
+                                                    فایل های کاربران
+                                                </a>
+                                                <button type="button" class="btn btn-de-danger btn-sm"
+                                                        data-bs-toggle="modal" data-bs-target="#exampleModalSend">
+                                                    <i class="mdi mdi-content-duplicate me-1"></i>
+                                                    جدید
+                                                </button>
+                                                <div class="modal fade" id="exampleModalSend" tabindex="-1"
+                                                     aria-labelledby="exampleModalSendLabel" style="display: none;"
+                                                     aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header ">
+                                                                <h6 class="modal-title m-0"
+                                                                    id="exampleModalDefaultSend">جدید </h6>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"
+                                                                        aria-label="Close"></button>
+                                                            </div>
+
+                                                            <div class="modal-body">
+                                                                <div class="mb-1">
+                                                                    <label class="mb-2">ورود اطلاعات </label>
+                                                                    <div class="input-group ">
+                                                                        <span class="input-group-text"
+                                                                              id="">
+                                                                            عنوان
+                                                                        <code class="ms-1">*</code>
+                                                                        </span>
+                                                                        {{ form.title }}
+                                                                    </div>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <span class="btn btn-soft-primary btn-sm">در صورت خالی بودن، نام فایل به عنوان دوره انتخاب می‌شود</span>
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="mb-2">توضیحات</label>
+                                                                    {{ form.description }}
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label class="mb-2">انتخاب کاور</label>
+                                                                    {{ form.thumbnail }}
+                                                                </div>
+                                                                <div class="mb-1">
+                                                                    <label class="mb-2">
+                                                                        آپلود فایل
+                                                                        <code class="ms-1">*</code>
+                                                                    </label>
+                                                                    {{ form.lesson_content }}
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <span class="btn btn-soft-primary btn-sm">حداکثر حجم فایل برای آپلود 250 مگابایت انتخاب نمایید </span>
+                                                                </div>
+                                                                <div class="progress mb-3"
+                                                                     style="height: 14px; direction: ltr;">
+                                                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                                         role="progressbar" style="width: 0%;"
+                                                                         aria-valuenow="0" aria-valuemin="0"
+                                                                         aria-valuemax="100">20%
+                                                                    </div>
+                                                                </div>
+                                                                <p id="error-message"
+                                                                   style="color: red; display: none;">حجم فایل بیشتر از
+                                                                    250 مگابایت است!</p>
+
+                                                            </div><!--end modal-body-->
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-de-success "
+                                                                        data-bs-dismiss="modal">
+                                                                    <i class="mdi mdi-close-outline me-1"></i>
+                                                                    Close
+                                                                </button>
+                                                                <button class="btn btn-de-primary"
+                                                                        name="action"
+                                                                        type="submit"
+                                                                        value="OkayFile">
+                                                                    Okay
+                                                                </button>
+
+                                                            </div><!--end modal-footer-->
+
+                                                        </div><!--end modal-content-->
+                                                    </div><!--end modal-dialog-->
+                                                </div><!--end modal-->
+
+                                                <a class="btn btn-blue btn-sm"
+                                                   href="{% url 'myseason-admin' course.id %}">
+                                                    <i class="mdi mdi-redo-variant me-1"></i>
+                                                    برگشت
+                                                </a>
+
+                                            </div>
+
+
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->
+                                </div>
+                            </form>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table style="width: 100%;" class="table  table-hover mb-0">
+                                        <thead class="table-primary">
+                                        <tr>
+                                            <th class="text-center">شماره</th>
+                                            <th class="text-center">کاور</th>
+                                            <th class="text-start">عنوان</th>
+                                            <th class="text-start">توضیحات</th>
+                                            <th class="text-center"> مدت زمان دوره</th>
+                                            <th class="text-center">پیش نمایش</th>
+                                            <th class="text-center">عملیات</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if lessons_data %}
+                                            {% for lesson in lessons_data %}
+                                                <tr>
+                                                    <td style="width: 5%; height: 50px;" class="text-center">
+                                                        {{ lesson.order }}
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {% if lesson.thumbnail %}
+                                                            <img src="{{ lesson.thumbnail.url }}" alt="..."
+                                                                 class="rounded-3 thumb-md me-1">
+                                                        {% else %}
+                                                            <img src="{% static 'assets/images/default/default-cover.gif' %}"
+                                                                 alt="..."
+                                                                 class="rounded-3 thumb-md me-1">
+                                                        {% endif %}
+                                                    </td>
+                                                    <td style="width: 40%; height: 50px;" class="text-start">
+                                                        <a type="button" data-bs-toggle="modal"
+                                                           data-bs-target="#exampleModalRequest{{ lesson.id }}">
+                                                            {{ lesson.title|truncatewords:20 }}
+                                                        </a>
+                                                    </td>
+                                                    <td style="width: 15%; height: 50px;" class="text-start">
+                                                        {{ lesson.description|truncatewords:5 }}
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {{ lesson.duration }}
+                                                        {% if lesson.lesson_content.name|slice:"-3:" == "mp3" %}
+                                                            <i class="mdi mdi-music-circle-outline mdi-18px text-success ml-1"></i>
+                                                        {% else %}
+                                                            <i class="mdi mdi-play-speed mdi-18px text-success ml-1"></i>
+                                                        {% endif %}
+
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        <a type="button" class="badge badge-soft-danger"
+                                                           data-bs-toggle="modal"
+                                                           data-bs-target="#exampleModalRequest{{ lesson.id }}">
+                                                            پیش نمایش
+                                                        </a>
+                                                        <div class="modal fade" id="exampleModalRequest{{ lesson.id }}"
+                                                             tabindex="-1" aria-labelledby="exampleModalRequestLabel"
+                                                             style="display: none;" aria-hidden="true">
+                                                            <div class="modal-dialog">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h6 class="modal-title m-0"
+                                                                            id="exampleModalRequestLabel">
+                                                                            پیش نمایش
+                                                                        </h6>
+                                                                        <button type="button" class="btn-close"
+                                                                                data-bs-dismiss="modal"
+                                                                                aria-label="Close"></button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        <div class="ratio ratio-16x9">
+                                                                            <video poster="/{{ lesson.thumbnail }}"
+                                                                                   width="560" height="315" controls>
+                                                                                <source src="{{ lesson.lesson_content.url }}"
+                                                                                        type="video/mp4">
+                                                                            </video>
+                                                                        </div>
+                                                                    </div><!--end modal-body-->
+                                                                    <div class="modal-footer">
+                                                                        <button class="btn btn-de-success btn-sm"
+                                                                                data-bs-dismiss="modal"
+                                                                                type="button">Close
+                                                                        </button>
+                                                                    </div><!--end modal-footer-->
+                                                                </div><!--end modal-content-->
+                                                            </div><!--end modal-dialog-->
+                                                        </div><!--end modal-->
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        <a href="{% url 'lessonupdate-admin' lesson.id %}"
+                                                           class="badge font-12 bg-soft-primary p-2">
+                                                            <i class="las la-pen font-20"></i>
+                                                            <i class="las la-trash-alt font-20"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        </tbody>
+                                    </table><!--end /table-->
+                                </div><!--end /tableresponsive-->
+
+                            </div><!--end card-body-->
+                            <div class="card-body">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-sm justify-content-center">
+                                        {% if lessons_data.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1">&laquo; اولین</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ lessons_data.previous_page_number }}">قبلی</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">&laquo; اولین</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">قبلی</a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for page_num in lessons_data.paginator.page_range %}
+                                            {% if page_num == lessons_data.number %}
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="#">{{ page_num }}</a>
+                                                </li>
+                                            {% elif page_num >= lessons_data.number|add:'-2' and page_num <= lessons_data.number|add:'2' %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if lessons_data.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ lessons_data.next_page_number }}">بعدی</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ lessons_data.paginator.num_pages }}">آخرین &raquo;</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">بعدی</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">آخرین &raquo;</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+                    </div><!--end col-->
+
+                </div><!--end row-->
+                {% include "core/include/message.html" with TitlePage=" درس ها" %}
+            </div><!-- container -->
+
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+
+{% endblock %}
+
+{% block Javascript %}
+    {% include "core/include/script.html" %}
+    <script src="{% static 'assets/js/upload-file-lesson.js' %}"></script>
+    <script src="{% static 'assets/js/click-dashboard-tab.js' %}"></script>
+{% endblock %}

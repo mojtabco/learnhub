@@ -1,0 +1,326 @@
+{% extends "core/layout/main.html" %}
+{% load static %}
+
+{% block ContentPage %}
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="page-wrapper">
+
+            <!-- Page Content-->
+            <div class="page-content-tab">
+
+                <div class="container-fluid">
+                    <!-- Page-Title -->
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="page-title-box">
+                                <div class="float-end">
+                                    {% include "core/include/breadcrumb.html" with breadcrumbs=breadcrumbs %}
+                                </div>
+
+                            </div><!--end page-title-box-->
+                        </div><!--end col-->
+                    </div>
+                    <!-- end page title end breadcrumb -->
+                    <div class="row mt-2">
+                        <div class="col-12">
+                            <div class="card">
+                                <div class="card-body">
+                                    <div class="met-profile">
+                                        <div class="row">
+                                            <div class="col-lg-4 align-self-center mb-3 mb-lg-0">
+                                                <div class="met-profile-main">
+                                                    <div class="met-profile-main-pic">
+                                                        {% if profile.profile_picture %}
+                                                            <img src="{{ profile.profile_picture.url }}"
+                                                                 alt="..."
+                                                                 height="110" class="rounded-circle">
+                                                        {% else %}
+                                                            <img src="{% static 'assets/images/default/default-profile-picture.jpg' %}"
+                                                                 alt="..."
+                                                                 height="110" class="rounded-circle">
+                                                        {% endif %}
+
+                                                    </div>
+                                                    <div class="met-profile_user-detail">
+                                                        <h5 class="met-user-name">{{ profile.user.get_full_name }}</h5>
+                                                        <p class="mb-0 met-user-name-post">
+                                                            <b> شناسه کاربری </b> : {{ profile.user.username }}
+                                                        </p>
+                                                    </div>
+                                                </div>
+
+                                            </div><!--end col-->
+
+                                            <div class="col-lg-4 ms-auto align-self-center">
+                                                <ul class="list-unstyled personal-detail mb-0">
+                                                    <li class=""><i
+                                                            class="las la-phone mr-2 text-secondary font-22 align-middle"></i>
+                                                        <b> تلفن </b> :
+                                                        {% if profile.phone_number %}
+                                                            {{ profile.phone_number }}
+                                                        {% endif %}
+                                                    </li>
+                                                    <li class="mt-2"><i
+                                                            class="las la-envelope text-secondary font-22 align-middle mr-2"></i>
+                                                        <b> ایمیل </b> : {{ profile.email }}
+                                                    </li>
+                                                    <li class="mt-2"><i
+                                                            class="las la-globe text-secondary font-22 align-middle mr-2"></i>
+                                                        <b> وب سایت </b> :
+                                                        <a href="{{ profile.website }}"
+                                                           class="font-14 text-primary">{{ profile.website }}</a>
+                                                    </li>
+                                                </ul>
+
+                                            </div><!--end col-->
+                                            <div class="col-lg-4 align-self-center">
+
+                                            </div><!--end col-->
+                                        </div><!--end row-->
+                                    </div><!--end f_profile-->
+                                </div><!--end card-body-->
+                                <div class="card-body p-0">
+                                    <!-- Nav tabs -->
+                                    <ul class="nav nav-tabs" role="tablist">
+
+                                        <li class="nav-item">
+                                            <a class="nav-link active" data-bs-toggle="tab" href="#Settings" role="tab"
+                                               aria-selected="true">تنظیمات</a>
+                                        </li>
+
+                                    </ul>
+
+                                    <!-- Tab panes -->
+                                    <div class="tab-content">
+
+                                        <div class="tab-pane p-3 active" id="Settings" role="tabpanel">
+                                            <div class="row">
+
+                                                <div class="col-lg-6 col-xl-6">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <div class="row align-items-center">
+                                                                <div class="col">
+                                                                    <h4 class="card-title">اطلاعات شخصی</h4>
+                                                                </div><!--end col-->
+                                                            </div>  <!--end row-->
+                                                        </div><!--end card-header-->
+                                                        <div class="card-body">
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">نام</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    {{ form_user.first_name }}
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">نام
+                                                                    خانوادگی</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    {{ form_user.last_name }}
+                                                                </div>
+                                                            </div>
+
+
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">
+                                                                    تلفن
+                                                                    تماس
+                                                                </label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-text"><i
+                                                                            class="las la-phone"></i></span>
+                                                                        {{ form.phone_number }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">ایمیل
+                                                                    آدرس</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    <div class="input-group">
+                                                                    <span class="input-group-text"><i
+                                                                            class="las la-at"></i></span>
+                                                                        {{ form_user.email }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">
+                                                                    وب سایت</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    <div class="input-group">
+                                                                        <span class="input-group-text">W</span>
+                                                                        {{ form.website }}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">
+                                                                    جنسیت</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    <div class="input-group">
+
+                                                                        <span class="input-group-text"><i
+                                                                                class="las la-user"></i>
+                                                                        </span>
+
+                                                                        {{ form.gender }}
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">
+                                                                    انتخاب عکس پروفایل</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    {{ form.profile_picture }}
+                                                                    <code style="direction: ltr; text-align: left; display: block;">{% static 'profile-photo' %}</code>
+
+                                                                </div>
+                                                            </div>
+
+                                                            <div class="form-group mb-3 row">
+                                                                <div class="col-lg-9 col-xl-8 offset-lg-3">
+
+                                                                    <button type="submit"
+                                                                            name="action"
+                                                                            value="OkayProfile"
+                                                                            class="btn btn-primary">
+                                                                        باشه<i
+                                                                            class="fas fa-sign-in-alt ms-1 fa-rotate-180"></i>
+                                                                    </button>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div> <!--end col-->
+
+                                                <div class="col-lg-6 col-xl-6">
+                                                    <div class="card">
+                                                        <div class="card-header">
+                                                            <h4 class="card-title">تغییر رمز</h4>
+                                                        </div><!--end card-header-->
+                                                        <div class="card-body">
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">رمز
+                                                                    عبور فعلی</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    <input class="form-control"
+                                                                           id="current_password"
+                                                                           name="current_password"
+                                                                           type="password"
+                                                                           placeholder="رمزعبور">
+
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">رمز
+                                                                    عبور
+                                                                    جدید</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    <input class="form-control"
+                                                                           id="password"
+                                                                           name="password"
+                                                                           type="password"
+                                                                           placeholder="رمز عبور جدید وارد کنید ">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <label class="col-xl-3 col-lg-3 text-end mb-lg-0 align-self-center form-label">تایید
+                                                                    رمز عبور</label>
+                                                                <div class="col-lg-9 col-xl-8">
+                                                                    <input class="form-control"
+                                                                           id="confirm_password"
+                                                                           name="confirm_password"
+                                                                           type="password"
+                                                                           placeholder="مجدد رمز عبور وارد نمایید">
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group mb-3 row">
+                                                                <div class="col-lg-9 col-xl-8 offset-lg-3">
+                                                                    <button type="submit"
+                                                                            name="action"
+                                                                            value="OkayPassword"
+                                                                            class="btn btn-primary">
+                                                                        تغییر
+                                                                        رمز<i
+                                                                            class="mdi mdi-textbox-password ms-1 fa-rotate-180"></i>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                            <hr>
+                                                            <a href="{% url 'recover' %}" class="text-primary font-12">رمز
+                                                                عبور را فراموش
+                                                                کرده‌اید؟</a>
+
+                                                        </div><!--end card-body-->
+                                                    </div><!--end card-->
+                                                    <div class=" card">
+                                                        <div class="row">
+                                                            <div class="col-6 card-body">
+                                                                <div class="form-group mb-3 row">
+                                                                    <label class="col-xl-3 col-lg-3 text-center mb-lg-0 align-self-center form-label">
+                                                                        شما در این گروه ها عضو هستید</label>
+                                                                    <div class="col-lg-9 col-xl-8">
+                                                                        <select name="access_groups"
+                                                                                class="form-control text-end"
+                                                                                id="id_access_groups" multiple="">
+                                                                            {% for access_group in access_groups %}
+                                                                                <option value="{{ access_group.id }}">
+                                                                                    {{ access_group }}
+                                                                                </option>
+                                                                            {% endfor %}
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-6 card-body">
+                                                                <div class="form-group mb-3 row">
+                                                                    <label class="col-xl-3 col-lg-3 text-center mb-lg-0 align-self-center form-label">
+                                                                        دسترسی شما</label>
+                                                                    <div class="col-lg-9 col-xl-8">
+                                                                        <select name="access_groups"
+                                                                                class="form-control text-end"
+                                                                                id="id_access_groups" multiple="">
+                                                                            {% for access in access_user %}
+                                                                                <option value="{{ access.id }}">
+                                                                                    {{ access }}
+                                                                                </option>
+                                                                            {% endfor %}
+                                                                        </select>
+
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                </div> <!-- end col -->
+
+                                            </div><!--end row-->
+                                        </div>
+                                    </div>
+                                </div> <!--end card-body-->
+                            </div><!--end card-->
+                        </div><!--end col-->
+                    </div><!--end row-->
+                    {% include "core/include/message.html" with TitlePage=" پروفایل کاربر " %}
+                </div><!-- container -->
+
+            </div>
+            <!-- end page content -->
+
+        </div>
+        <!-- end page-wrapper -->
+    </form>
+
+{% endblock %}
+
+{% block Javascript %}
+    {% include "core/include/script.html" %}
+{% endblock %}
