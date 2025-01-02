@@ -65,6 +65,7 @@ class ProfileView(LoginRequiredMixin, View):
         }
         return render(request, self.template_name, context)
 
+    @restrict_demo_user
     def post(self, request, *args, **kwargs):
         user = request.user
         profile,_,_ = self.get_user_profile( request, *args, **kwargs)
