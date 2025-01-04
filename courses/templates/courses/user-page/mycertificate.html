@@ -1,0 +1,385 @@
+{% extends "core/layout/main.html" %}
+{% load static %}
+
+{% block ContentPage %}
+
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content-tab">
+
+            <div class="container-fluid">
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="float-end">
+                                {% include "core/include/breadcrumb.html" with breadcrumbs=breadcrumbs %}
+                            </div>
+                            <h4 class="page-title"> اطلاعات مدارک شما</h4>
+                        </div>
+                        <!--end page-title-box-->
+                    </div>
+                    <!--end col-->
+                </div>
+                <!-- end page title end breadcrumb -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-info">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h4 class="card-title">
+
+                                                {# {{ courses_data.count }}#}
+                                            </h4>
+                                        </div><!--end col-->
+
+                                        <div class="col-auto">
+                                            <div class="align-self-center">
+                                                <a class="btn btn-blue btn-sm" href="/">
+                                                    <i class="mdi mdi-home-outline me-2"></i>
+                                                    صفحه اصلی
+                                                </a>
+                                            </div>
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->
+                                </div>
+                            </form>
+                            <div class="card-body ">
+                                <div class="table-responsive">
+                                    <table style="width: 100%;" class="table  table-hover mb-0">
+                                        <thead class="table-primary">
+                                        <tr>
+                                            <th class="text-center">کاور</th>
+                                            <th class="text-center">تکمیل</th>
+                                            <th class="text-start">عنوان</th>
+                                            <th class="text-center">پیشرفت</th>
+                                            <th class="text-center">دسته بندی</th>
+                                            <th class="text-center">کد مدرک</th>
+                                            <th class="text-center">عملیات</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if courses_data %}
+                                            {% for course in courses_data %}
+                                                <tr class="clickable-row" data-link="">
+                                                    <td style="width: 5%; height: 50px;" class="text-center">
+                                                        <a href="{% url 'view' course.course.id %}">
+                                                            {% if course.course.thumbnail %}
+                                                                <img src="{{ course.course.thumbnail.url }}" alt="..."
+                                                                     class="rounded-3 thumb-md me-1">
+                                                            {% else %}
+                                                                <img src="{% static 'assets/images/default/default-cover.gif' %}"
+                                                                     alt="..."
+                                                                     class="rounded-3 thumb-md me-1">
+                                                            {% endif %}
+                                                        </a>
+                                                    </td>
+                                                    <td style="width: 5%; height: 50px;" class="text-center">
+                                                        {% if course.course.completed %}
+                                                            <i class="mdi mdi-check-decagram mdi-18px text-primary ml-1"></i>
+                                                        {% else %}
+                                                            <i class="mdi mdi-progress-wrench mdi-18px text-primary ml-1"></i>
+                                                        {% endif %}
+                                                    </td>
+                                                    <td style="width: 20%; height: 50px;" class="text-start">
+                                                        <a href="{% url 'view' course.course.id %}">{{ course.course.title }}</a>
+                                                    </td>
+                                                    <td style="width: 30%; height: 50px;" class="text-start">
+                                                        <div class="media align-items-center">
+                                                            <i class="mdi mdi-certificate text-warning font-30"></i>
+                                                            <div class="media-body ms-3 align-self-center">
+                                                                {% if course.percent_completed < 50 %}
+                                                                    <h6 class="m-0 font-13 mt-1 mb-2">هیچی نیست، تازه
+                                                                        شروع کردی!
+                                                                        ادامه بده، موفق می‌شی! 💪</h6>
+                                                                {% elif course.percent_completed == 50 %}
+                                                                    <h6 class="m-0 font-13 mt-1 mb-2">نصفشو رفتی! دیدی
+                                                                        چقدر راحت
+                                                                        بود؟ همینطوری ادامه بده! 🚀</h6>
+                                                                {% elif course.percent_completed > 50 and course.percent_completed < 100 %}
+                                                                    <h6 class="m-0 font-13 mt-1 mb-2">نزدیکی به هدف! فقط
+                                                                        یه کم
+                                                                        دیگه مونده، دست برندار! 🏃‍♂️✨</h6>
+                                                                {% elif course.percent_completed == 100 %}
+                                                                    <h6 class="m-0 font-13 mt-1 mb-2">دمتم گرم! تو کارو
+                                                                        تموم کردی!
+                                                                        حالا برو مدرکتو بگیر! 🏆🎉</h6>
+                                                                {% endif %}
+
+                                                                <div class="d-flex justify-content-between">
+                                                                    <span>
+                                                                        <a href="#">
+                                                                            <i class="mdi mdi-format-list-bulleted text-success"></i>
+                                                                            <span class="text-muted">
+                                                                                {{ course.course.lesson_count }} / {{ course.completed_lessons }}
+                                                                            </span>
+                                                                        </a>
+                                                                    </span>
+                                                                    <span class="text-muted">
+                                                                        {{ course.percent_completed }}% تکمیل شده
+                                                                    </span>
+                                                                </div>
+                                                                <div class="progress mb-3"
+                                                                     style="height: 6px; direction: ltr;">
+                                                                    <div class="progress-bar progress-bar-striped progress-bar-animated"
+                                                                         role="progressbar"
+                                                                         style="width: {{ course.percent_completed }}%;"
+                                                                         aria-valuenow="{{ course.percent_completed }}"
+                                                                         aria-valuemin="0"
+                                                                         aria-valuemax="100">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td style="width: 15%; height: 50px;" class="text-center">
+                                                        <span class="badge badge-soft-blue">{{ course.course.subcategory }}</span>
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {% if course.certificate_file %}
+                                                            {{ course.certificate_code }}
+                                                        {% endif %}
+
+                                                    </td>
+                                                    <td style="width: 15%; height: 50px;" class="text-center">
+                                                        {% if course.certificate_file %}
+
+                                                            <a href="{{ course.certificate_file }}"
+                                                               class="badge font-12 bg-soft-primary p-2"
+                                                               data-bs-toggle="tooltip"
+                                                               data-bs-placement="bottom"
+                                                               target="_blank"
+                                                               rel="noopener noreferrer"
+                                                               title="دانلود با فرمت word">
+                                                                <i class="lar la-file-word font-24"></i>
+                                                            </a>
+                                                            <a href="{% url 'certificate_pdf' course.course.id %}"
+                                                               class="badge font-12 bg-soft-primary p-2"
+                                                               data-bs-toggle="tooltip"
+                                                               data-bs-placement="bottom"
+                                                               title="دانلود با فرمت pdf">
+                                                                <i class="lar la-file-pdf font-24"></i>
+                                                            </a>
+
+                                                        {% else %}
+                                                            <a href="#"
+                                                               class="btn btn-sm btn-soft-primary"
+                                                               data-bs-toggle="modal"
+                                                               data-bs-target="#exampleModalCetificate{{ course.course.id }}"
+                                                               target="_blank" rel="noopener noreferrer">
+                                                                <i class="las la-external-link-alt font-15"></i> درخواست
+                                                                مدرک
+                                                            </a>
+                                                            <div class="modal fade"
+                                                                 id="exampleModalCetificate{{ course.course.id }}"
+                                                                 tabindex="-1"
+                                                                 aria-labelledby="exampleModalDeleteLabel"
+                                                                 aria-hidden="true">
+                                                                <div class="modal-dialog modal-dialog-centered"
+                                                                     role="document">
+                                                                    <div class="modal-content">
+                                                                        <div class="modal-header">
+                                                                            <h6 class="modal-title m-0"
+                                                                                id="exampleModalDeleteTitle">پنجره
+                                                                                اطلاعات</h6>
+                                                                            <button type="button" class="btn-close"
+                                                                                    data-bs-dismiss="modal"
+                                                                                    aria-label="Close"></button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <div class="row">
+                                                                                <div class="col-lg-3 text-center align-self-center">
+                                                                                    {% if course.course.completed and user.get_full_name and course.percent_completed == 100 %}
+                                                                                        <img src="{% static 'assets/images/default/certificate-icon.gif' %}"
+                                                                                             alt="..."
+                                                                                             class="img-fluid">
+                                                                                    {% else %}
+                                                                                        <img src="{% static 'assets/images/default/information-icon.gif' %}"
+                                                                                             alt="..."
+                                                                                             class="img-fluid">
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                                <div class="col-lg-9 text-start">
+                                                                                    {% if course.course.certified %}
+                                                                                        {% if course.course.completed %}
+                                                                                            {% if course.percent_completed < 100 %}
+                                                                                                <h5>هنوز دوره آموزشی
+                                                                                                    کامل
+                                                                                                    نکردی!
+                                                                                                </h5>
+                                                                                                <span class="badge bg-soft-danger">  مدارک من </span>
+                                                                                                <ul class="mt-3 mb-0">
+                                                                                                    <li>به همین سادگی
+                                                                                                    </li>
+                                                                                                </ul>
+                                                                                            {% elif not user.get_full_name %}
+                                                                                                <h5>برای دریافت مدارک
+                                                                                                    این
+                                                                                                    دوره، اطلاعات
+                                                                                                    پروفایل
+                                                                                                    تکمیل نمایید.
+                                                                                                </h5>
+                                                                                                <span class="badge bg-soft-danger">  مدارک من </span>
+                                                                                                <a href="{% url 'profile' %}">
+                                                                                                    <small class="text-blue">برو
+                                                                                                        به
+                                                                                                        پروفایل</small>
+                                                                                                </a>
+
+                                                                                                <ul class="mt-3 mb-0">
+                                                                                                    <li>
+                                                                                                        نام و نام
+                                                                                                        خانوادگی
+                                                                                                        خود
+                                                                                                        را در قسمت
+                                                                                                        پروفایل وارد
+                                                                                                        کنید.
+                                                                                                    </li>
+                                                                                                    <li>به همین سادگی
+                                                                                                    </li>
+                                                                                                </ul>
+                                                                                            {% else %}
+                                                                                                <h5>شما موفق به دریافت
+                                                                                                    گواهی‌نامه این دوره
+                                                                                                    با
+                                                                                                    مشخصات زیر
+                                                                                                    شده‌اید</h5>
+                                                                                                <span class="badge bg-soft-danger">  مدارک من </span>
+                                                                                                <ul class="mt-3 mb-0">
+                                                                                                    <li>{{ course.course.title }}</li>
+                                                                                                    <li>{{ user.get_full_name }}</li>
+                                                                                                    <li>به همین سادگی
+                                                                                                    </li>
+                                                                                                </ul>
+                                                                                            {% endif %}
+                                                                                        {% else %}
+                                                                                            <h5>برای دریافت مدرک دوره
+                                                                                                آموزشی
+                                                                                                شما
+                                                                                                در حال تکمیل است
+                                                                                            </h5>
+                                                                                            <span class="badge bg-soft-danger">  مدارک من </span>
+                                                                                            <ul class="mt-3 mb-0">
+                                                                                                <li>
+                                                                                                    بعد از تکمیل دوره و
+                                                                                                    آموزش اقدام به
+                                                                                                    دریافت مدرک نمایید
+                                                                                                </li>
+                                                                                                <li>به همین سادگی</li>
+                                                                                            </ul>
+                                                                                        {% endif %}
+                                                                                    {% else %}
+                                                                                        <h5>
+                                                                                            دریافت مدرک برای این دوره
+                                                                                            مقدور نمی باشد
+                                                                                        </h5>
+                                                                                        <span class="badge bg-soft-danger">  مدارک من </span>
+                                                                                        <ul class="mt-3 mb-0">
+                                                                                            <li>
+                                                                                                برای دریافت مدرک با مدیر
+                                                                                                سایت تماس بگیرید
+                                                                                            </li>
+                                                                                            <li>به همین سادگی</li>
+                                                                                        </ul>
+                                                                                    {% endif %}
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-de-success"
+                                                                                    data-bs-dismiss="modal">Close
+                                                                            </button>
+                                                                            {% if course.course.completed and course.percent_completed == 100 and user.get_full_name %}
+                                                                                <a href="{% url 'certificate_request' course.course.id %}"
+                                                                                   class="btn btn-de-primary ">Okay</a>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        {% endif %}
+
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        </tbody>
+                                    </table><!--end /table-->
+                                </div><!--end /tableresponsive-->
+
+                            </div><!--end card-body-->
+                            <div class="card-body">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-sm justify-content-center">
+                                        {% if courses_data.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1">&laquo; اولین</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ courses_data.previous_page_number }}">قبلی</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">&laquo; اولین</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">قبلی</a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for page_num in courses_data.paginator.page_range %}
+                                            {% if page_num == courses_data.number %}
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="#">{{ page_num }}</a>
+                                                </li>
+                                            {% elif page_num >= courses_data.number|add:'-2' and page_num <= courses_data.number|add:'2' %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if courses_data.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ courses_data.next_page_number }}">بعدی</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ courses_data.paginator.num_pages }}">آخرین &raquo;</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">بعدی</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">آخرین &raquo;</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+            </div><!-- container -->
+
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+
+{% endblock %}
+
+{% block Javascript %}
+    {% include "core/include/script.html" %}
+{% endblock %}
+

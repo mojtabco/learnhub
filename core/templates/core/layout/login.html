@@ -1,0 +1,23 @@
+<!--به نام خداوند بخشنده مهربان-->
+<!-- هیچ نیرو و توانى جز از سوى خداوند بلندمرتبه و بزرگ نیست-->
+<!--سپاس و ستايش مخصوص خداوندى است كه پروردگار جهانيان است-->
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+    <!-- head -->
+     {% include "core/include/head.html" with TitlePage="LearnHub - Login" %}
+
+    <body id="body" class="auth-page" style="background-image: url({% static 'assets/images/default/background.png' %}); background-size: cover; background-position: center center;">
+
+    <!-- Log In page -->
+    {% block ContentPage %} {% endblock %}
+
+
+    <!-- Javascript  -->
+    <!-- vendor js -->
+    {% block Javascript %} {% endblock %}
+
+
+</body>
+
+</html>

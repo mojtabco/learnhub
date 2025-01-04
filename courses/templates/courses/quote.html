@@ -1,0 +1,175 @@
+{% extends "core/layout/main.html" %}
+{% load static %}
+{#{% block TitlePage %} LearnHub {% endblock %}#}
+
+{% block ContentPage %}
+
+    <div class="page-wrapper">
+
+        <!-- Page Content-->
+        <div class="page-content-tab">
+
+            <div class="container-fluid">
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="float-end">
+                                 {% include "core/include/breadcrumb.html" with breadcrumbs=breadcrumbs %}
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-lg-12 text-start">
+                                    <div class="text-start">
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">
+                                                <p class="text-blue mt-0">
+                                                    {{ link }}
+                                                </p>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <form role="search" action="" method="GET">
+                                                    <div class="input-group">
+                                                        {{ form_search.SearchText }}
+                                                        <button type="submit" class="btn btn-primary btn-sm"><i
+                                                                class="fas fa-search"></i></button>
+                                                    </div>
+                                                </form>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <a href="{% url 'quote' %}" class="btn btn-primary btn-sm"
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف فیلتر"
+                                                   data-bs-trigger="hover">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <a href="{% url 'quote' %}?link=like" class="btn btn-primary btn-sm"
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                   title="لایک شده " data-bs-trigger="hover">
+                                                    <i class="fas fa-heart"></i>
+                                                </a>
+                                            </li>
+
+                                        </ul>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div>
+                        <!--end page-title-box-->
+                    </div>
+                    <!--end col-->
+                </div>
+                <!-- end page title end breadcrumb -->
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    {% if quotes_data %}
+                        {% for quote in quotes_data %}
+                            <div class="col-lg-3 col-lg-2">
+                                <div class="card shadow rounded-4">
+                                    <div class="card-body">
+                                        <h6 class="my-3">
+                                            {{ quote.quote }}
+                                        </h6>
+                                        <p class="card-text text-primary text-sm-start font-12">
+
+                                        </p>
+                                        <hr>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="meta-box">
+                                                <div class="media tag-section">
+                                                    <div class="align-self-center text-primary ms-1 mt-1">
+                                                        {{ quote.quote_speaker }}
+                                                    </div>
+                                                    <span class="media-body align-self-center text-truncate"></span>
+                                                </div>
+                                            </div>
+                                            <div class="align-self-end">
+                                                <div class="align-self-center d-inline-block like-section me-1">
+                                                    <a href="#" class="like-href"
+                                                       data-href-template="{% url 'quote_like' quote.id %}">
+                                                        <span class="like-count">
+                                                            {% if quote.total_likes > 0 %}
+                                                                {{ quote.total_likes }}
+                                                            {% endif %}
+                                                        </span>
+                                                        <span>
+                                                            {% if user in quote.likes.all %}
+                                                                <i class="mdi mdi-heart text-danger font-20 like-icon"></i>
+                                                            {% else %}
+                                                                <i class="mdi mdi-heart-outline text-danger font-20 like-icon"></i>
+                                                            {% endif %}
+                                                        </span>
+                                                    </a>
+                                                    <input type="hidden" name="csrfmiddlewaretoken"
+                                                           value="{{ csrf_token }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-lg-3 col-lg-2">
+                            <div class="card shadow rounded-4">
+                                <div class="card-body">
+                                    <h6 class="my-3">
+                                       چیزی پیدا نکردم
+
+                                    </h6>
+                                    <p class="card-text text-primary text-sm-start font-12">
+
+
+                                    </p>
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="meta-box">
+                                            <div class="media tag-section">
+                                                <div class="align-self-center text-primary ms-1 mt-1">
+                                                    به همین سادگی
+                                                </div>
+                                                <span class="media-body align-self-center text-truncate"></span>
+                                            </div>
+                                        </div>
+                                        <div class="align-self-end">
+                                            <div class="align-self-center d-inline-block like-section me-1">
+                                                <a href="#" class="like-href"
+                                                   data-href-template="">
+                                                        <span class="like-count">
+
+                                                        </span>
+                                                    <span>
+                                                           <i class="mdi mdi-heart text-danger font-20 like-icon"></i>
+                                                        </span>
+                                                </a>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div><!--end row-->
+
+                <div class="row">
+
+
+                </div><!--end row-->
+
+            </div><!-- container -->
+
+
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+
+{% endblock %}
+
+{% block Javascript %}
+    {% include "core/include/script.html" %}
+    <script src="{% static 'assets/js/quote-like.js' %}"></script>
+{% endblock %}

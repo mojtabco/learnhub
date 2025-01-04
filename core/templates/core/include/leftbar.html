@@ -1,0 +1,266 @@
+{% load static %}
+<div class="leftbar-tab-menu">
+    <div class="main-icon-menu">
+        <a href="{% url 'index' %}" class="logo logo-metrica d-block text-center">
+            <span>
+                <img src="{% static 'assets/images/default/default-icon-sm.png' %}" alt="logo-small" class="logo-sm">
+            </span>
+        </a>
+        <div class="main-icon-menu-body">
+            <div class="position-reletive h-100" data-simplebar style="overflow-x: hidden;">
+                <ul class="nav nav-tabs" role="tablist" id="tab-menu">
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="خانه"
+                        data-bs-trigger="hover">
+                        <a href="#MetricaDashboard" id="dashboard-tab" class="nav-link">
+                            <i class="ti ti-smart-home menu-icon"></i>
+                        </a><!--end nav-link-->
+                    </li><!--end nav-item-->
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="آموزش"
+                        data-bs-trigger="hover">
+                        <a href="#MetricaApps" id="apps-tab" class="nav-link">
+                            <i class="ti ti-apps menu-icon"></i>
+                        </a><!--end nav-link-->
+                    </li><!--end nav-item-->
+
+                    <li class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="تنظیمات کاربر"
+                        data-bs-trigger="hover">
+                        <a href="#MetricaAuthentication" id="authentication-tab" class="nav-link">
+                            <i class="ti ti-users menu-icon"></i>
+                        </a><!--end nav-link-->
+                    </li><!--end nav-item-->
+                </ul><!--end nav-->
+            </div><!--end /div-->
+        </div><!--end main-icon-menu-body-->
+        {% if user.is_authenticated %}
+            <div class="pro-metrica-end">
+                <div class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="قفل کردن "
+                     data-bs-trigger="hover">
+                    <a href="{% url 'lockscreen' %}" class="profile active">
+                        <div class="icon-dual-light">
+                            <i class="fas fa-user-lock font-20"></i>
+                        </div>
+                    </a>
+                </div><!--end nav-item-->
+                <hr>
+                <div class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="خروج "
+                     data-bs-trigger="hover">
+                    <a href="{% url 'logout' %}" class="profile active">
+                        <div class="icon-dual-light">
+                            <i class="fas fa-power-off font-22"></i>
+                        </div>
+                    </a>
+                </div><!--end nav-item-->
+            </div><!--end pro-metrica-end-->
+        {% else %}
+            <div class="pro-metrica-end">
+                <div class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title="ورود"
+                     data-bs-trigger="hover">
+                    <a href="{% url 'login' %}" class="profile active">
+                        <div class="icon-dual-light">
+                            <i class="fas fa-sign-in-alt fa-rotate-180 font-22"></i>
+                        </div>
+                    </a>
+                </div><!--end nav-item-->
+                <hr>
+                <div class="nav-item" data-bs-toggle="tooltip" data-bs-placement="right" title=" ثبت نام "
+                     data-bs-trigger="hover">
+                    <a href="{% url 'register' %}" class="profile active">
+                        <div class="icon-dual-light">
+                            <i class="fas fa-user-plus font-22"></i>
+                        </div>
+                    </a>
+                </div><!--end nav-item-->
+            </div><!--end pro-metrica-end-->
+
+        {% endif %}
+    </div>
+    <!--end main-icon-menu-->
+
+    <div class="main-menu-inner ">
+        <!-- LOGO -->
+        <div class="topbar-left text-center">
+            <a href="/" class="logo">
+                <span>
+                    <img src="{% static 'assets/images/default/default-logo.png' %}" alt="LearnHub"
+                         class="logo-sm logo-dark">
+                </span>
+            </a><!--end logo-->
+        </div><!--end topbar-left-->
+        <!--end logo-->
+        <div class="menu-body navbar-vertical tab-content" data-simplebar>
+            <div id="MetricaDashboard" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                 aria-labelledby="dasboard-tab">
+                <div class="title-box text-center">
+                    <h6 class="menu-title">صفحه اصلی</h6>
+                    <hr>
+                </div>
+
+                <div class="collapse navbar-collapse" id="sidebarCollapse">
+                    <!-- Navigation -->
+                    <ul class="navbar-nav">
+                        <li class="nav-link">
+                            <a class="icon-dual-2 " href="{% url 'index' %}">
+                                <i class="mdi mdi-developer-board mdi-18px me-1 align-text-bottom"></i>
+                                <span>داشبورد</span>
+                            </a>
+                        </li><!--end nav-item-->
+
+                        {% if user.is_authenticated %}
+                            <li class="nav-link">
+
+                                    <a class="icon-dual-2 active" href="{% url 'mycourse' %}">
+                                        <i class="mdi mdi-firebase mdi-18px me-1 align-text-bottom"></i>
+                                        <span> فایل های من</span>
+                                    </a>
+                            </li><!--end nav-item-->
+
+                            <li class="nav-link">
+                                <a class="icon-dual-2" href="{% url 'mytag' %}">
+                                    <i class="mdi mdi-bookmark-check  mdi-18px me-1 align-text-bottom"></i>
+                                    <span>انتخاب های من</span>
+                                </a>
+                            </li><!--end nav-item-->
+                            <li class="nav-link">
+                                <a class="icon-dual-2" href="{% url 'mycertificate' %}">
+                                    <i class="mdi mdi-certificate  mdi-18px me-1 align-text-bottom"></i>
+                                    <span>مدارک من</span>
+                                </a>
+                            </li><!--end nav-item-->
+                        {% else %}
+                            <li class="nav-link">
+                                    <a class="icon-dual-2 active" href="{% url 'register' %}">
+                                        <i class="fas fa-user-plus me-1 "></i>
+                                        <span> ثبت نام</span>
+                                    </a>
+                            </li><!--end nav-item-->
+
+                        {% endif %}
+                        {% if user.is_superuser %}
+                            <li class="nav-link">
+{#                                <a href="">#}
+                                    <a class="icon-dual-2" href="{% url 'mycourse-admin' %}">
+                                        <i class="mdi mdi-firebase mdi-18px me-1 align-text-bottom"></i>
+                                        <span> فایل های کاربران</span>
+                                    </a>
+                            </li><!--end nav-item-->
+                        {% endif %}
+                        <hr>
+                        <li class="nav-link">
+                            <a class="icon-dual-2" href="{% url 'soon' %}">
+                                <i class="mdi mdi-radio mdi-18px me-1 align-text-bottom"></i>
+                                <span>رادیو آنلاین</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-link">
+                            <a class="icon-dual-2" href="{% url 'soon' %}">
+                                <i class="mdi mdi-at me-1 mdi-18px me-1 align-text-bottom"></i>
+                                <span>شبکه های اجتماعی </span>
+                            </a>
+                        </li><!--end nav-item-->
+
+                    </ul><!--end navbar-nav--->
+                </div><!--end sidebarCollapse-->
+                <br></br>
+
+                {% if not user.is_authenticated %}
+                    <div class="text-center alert alert-primary border-0" role="alert">
+                        <a class="nav-link" href="{% url 'login' %}">
+                            <div class="icon-dual-blue">
+                                <i class="mdi mdi-login font-30 mdi-rotate-180"></i>
+                            </div>
+                            <span> برای داشتن تجربه بهتر وارد شوید😀 </span>
+                        </a>
+                    </div>
+                {% endif %}
+
+
+            </div><!-- end Dashboards -->
+
+            <div id="MetricaApps" class="main-icon-menu-pane tab-pane" role="tabpanel" aria-labelledby="apps-tab">
+                <div class="title-box text-center">
+                    <h6 class="menu-title">دسته بندی</h6>
+                    {#                    <h6 class="menu-title"> {{ category.title }}</h6>#}
+
+                    <hr></hr>
+                </div>
+                {% include "core/include/leftbar-menu-category.html" %}
+            </div><!-- end Crypto -->
+
+            <div id="MetricaAuthentication" class="main-icon-menu-pane tab-pane" role="tabpanel"
+                 aria-labelledby="authentication-tab">
+                <div class="title-box text-center">
+                    <h6 class="menu-title">تنظیمات حساب کاربر</h6>
+                    <hr></hr>
+                </div>
+                <ul class="nav flex-column">
+
+                    {% if user.is_authenticated %}
+                        <li class="nav-link">
+                            <a class="icon-dual-2" href="{% url 'profile' %}">
+                                <i class="ti ti-user font-16 me-1 align-text-bottom"></i>
+                                <span>پروفایل</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-link">
+                            <a class="icon-dual-2" href="{% url 'recover' %}">
+                                <i class="ti ti-barcode font-16 me-1 align-text-bottom"></i>
+                                <span>بازیابی رمز عبور</span>
+                            </a>
+                        </li><!--end nav-item-->
+
+                        {% if user.is_superuser %}
+                            <hr>
+                            <li class="nav-link">
+                                <a class="icon-dual-2" href="{% url 'users' %}">
+                                    <i class="ti ti-user-check font-16 me-1 align-text-bottom"></i>
+                                    <span>دسترسی کاربران</span>
+                                </a>
+                            </li><!--end nav-item-->
+                            <li class="nav-link">
+                                <a class="icon-dual-2" href="{% url 'groups' %}">
+                                    <i class="ti ti-users font-16 me-1 align-text-bottom"></i>
+                                    <span>دسترسی گروه ها</span>
+                                </a>
+                            </li><!--end nav-item-->
+                            <li class="nav-link">
+                                <a class="icon-dual-2" href="{% url 'site_setting' %}">
+                                    <i class="ti ti-settings font-16 me-1 align-text-bottom"></i>
+                                    <span>  تنظیمات سایت</span>
+                                </a>
+                            </li><!--end nav-item-->
+                            <hr>
+                        {% endif %}
+                        <li class="nav-link">
+                            <a class="icon-dual-2" href="{% url 'logout' %}">
+                                <i class="ti ti-power font-16 me-1 align-text-bottom"></i>
+                                <span> خروج</span>
+                            </a>
+                        </li><!--end nav-item-->
+                    {% else %}
+
+                        <li class="nav-link">
+                            <a class="icon-dual-2" href="{% url 'login' %}">
+                                <i class="ti ti-login font-16 me-1 align-text-bottom"></i>
+                                <span>ورود</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-link">
+                            <a class="icon-dual-2" href="{% url 'recover' %}">
+                                <i class="ti ti-login font-16 me-1 align-text-bottom"></i>
+                                <span>بازیابی رمزعبور</span>
+                            </a>
+                        </li><!--end nav-item-->
+                        <li class="nav-link">
+                            <a class="icon-dual-2" href="{% url 'register' %}">
+                                <i class="ti ti-user-plus font-16 me-1 align-text-bottom"></i>
+                                <span>ثبت نام</span>
+                            </a>
+                        </li><!--end nav-item-->
+                    {% endif %}
+
+                </ul><!--end nav-->
+            </div><!-- end Authentication-->
+        </div>
+        <!--end menu-body-->
+    </div><!-- end main-menu-inner-->
+</div>

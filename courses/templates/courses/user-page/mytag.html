@@ -1,0 +1,181 @@
+{% extends "core/layout/main.html" %}
+{% load static %}
+
+{% block ContentPage %}
+
+    <div class="page-wrapper">
+        <!-- Page Content-->
+        <div class="page-content-tab">
+
+            <div class="container-fluid">
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="float-end">
+                                {% include "core/include/breadcrumb.html" with breadcrumbs=breadcrumbs %}
+                            </div>
+                            <h4 class="page-title"> اطلاعات دوره های شما</h4>
+                        </div>
+                        <!--end page-title-box-->
+                    </div>
+                    <!--end col-->
+                </div>
+                <!-- end page title end breadcrumb -->
+
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card shadow-info">
+                            <form method="POST" enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="card-header">
+                                    <div class="row align-items-center">
+                                        <div class="col">
+                                            <h4 class="card-title">
+                                                دوره ها انتخاب شده شما
+                                            </h4>
+                                        </div><!--end col-->
+
+                                        <div class="col-auto">
+
+                                            <div class="align-self-center">
+
+
+                                                <a class="btn btn-blue btn-sm" href="/">
+                                                    <i class="mdi mdi-home-outline me-2"></i>
+                                                    صفحه اصلی
+                                                </a>
+
+                                            </div>
+                                        </div><!--end col-->
+                                    </div>  <!--end row-->
+                                </div>
+                            </form>
+                            <div class="card-body ">
+                                <div class="table-responsive">
+                                    <table style="width: 100%;" class="table  table-hover mb-0">
+                                        <thead class="table-primary">
+                                        <tr>
+                                            <th class="text-center">کاور</th>
+                                            <th class="text-center">انتخاب</th>
+                                            <th class="text-start">عنوان</th>
+                                            <th class="text-start">توضیحات</th>
+                                            <th class="text-center">دسته بندی</th>
+                                            <th class="text-center">تعداد درس</th>
+
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        {% if courses_data %}
+                                            {% for course in courses_data %}
+                                                <tr class="clickable-row" data-link="{% url 'view' course.id %}">
+                                                    <td style="width: 5%; height: 50px;" class="text-center">
+                                                        {% if ourse.thumbnail %}
+                                                            <img src="{{ course.thumbnail.url }}" alt="..."
+                                                                 class="rounded-3 thumb-md me-1">
+                                                        {% else %}
+                                                            <img src="{% static 'assets/images/default/default-cover.gif' %}"
+                                                                 alt="..."
+                                                                 class="rounded-3 thumb-md me-1">
+                                                        {% endif %}
+                                                    </td>
+                                                    <td style="width: 5%; height: 50px;" class="text-center">
+                                                        <i class="mdi mdi-bookmark-check mdi-18px text-blue ml-1"></i>
+                                                    </td>
+                                                    <td style="width: 30%; height: 50px;" class="text-start">
+                                                        <a href="{% url 'myseason' course.id %}">
+                                                            {{ course.title }}
+                                                        </a>
+                                                    </td>
+
+                                                    <td style="width: 30%; height: 50px;" class="text-start">
+                                                        {{ course.description }}
+                                                    </td>
+                                                    <td style="width: 15%; height: 50px;" class="text-center">
+                                                    <span class="badge badge-soft-blue">
+                                                        {{ course.subcategory }}
+                                                    </span>
+                                                    </td>
+                                                    <td style="width: 10%; height: 50px;" class="text-center">
+                                                        {{ course.lesson_count }}
+                                                    </td>
+
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+
+                                        </tbody>
+                                    </table><!--end /table-->
+                                </div><!--end /tableresponsive-->
+
+                            </div><!--end card-body-->
+                            <div class="card-body">
+                                <nav aria-label="Page navigation">
+                                    <ul class="pagination pagination-sm justify-content-center">
+                                        {% if courses_data.has_previous %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page=1">&laquo; اولین</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ courses_data.previous_page_number }}">قبلی</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">&laquo; اولین</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">قبلی</a>
+                                            </li>
+                                        {% endif %}
+
+                                        {% for page_num in courses_data.paginator.page_range %}
+                                            {% if page_num == courses_data.number %}
+                                                <li class="page-item active">
+                                                    <a class="page-link" href="#">{{ page_num }}</a>
+                                                </li>
+                                            {% elif page_num >= courses_data.number|add:'-2' and page_num <= courses_data.number|add:'2' %}
+                                                <li class="page-item">
+                                                    <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+                                                </li>
+                                            {% endif %}
+                                        {% endfor %}
+
+                                        {% if courses_data.has_next %}
+                                            <li class="page-item">
+                                                <a class="page-link" href="?page={{ courses_data.next_page_number }}">بعدی</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link"
+                                                   href="?page={{ courses_data.paginator.num_pages }}">آخرین &raquo;</a>
+                                            </li>
+                                        {% else %}
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">بعدی</a>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <a class="page-link" tabindex="-1">آخرین &raquo;</a>
+                                            </li>
+                                        {% endif %}
+                                    </ul>
+                                </nav>
+                            </div>
+
+                        </div>
+                    </div><!--end col-->
+                </div><!--end row-->
+
+            </div><!-- container -->
+
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+
+{% endblock %}
+
+{% block Javascript %}
+    {% include "core/include/script.html" %}
+    <script src="{% static 'assets/js/table_click.js' %}"></script>
+{% endblock %}
+

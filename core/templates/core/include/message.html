@@ -1,0 +1,87 @@
+{% load static %}
+
+{% if form.non_field_errors %}
+    <div class="col-lg-12">
+        <div class="toast-container position-absolute p-3 top-0 start-0"
+             id="toastPlacement"
+             data-original-class="toast-container position-absolute p-3">
+            <div class="toast fade show" role="alert" aria-live="assertive"
+                 aria-atomic="true">
+                <div class="toast-header text-white bg-danger">
+                    <img src="{% static 'assets/images/default/default-icon-sm.png' %}" alt="..."
+                         height="20"
+                         class="me-1">
+                    <h6 class="text-white me-auto my-0">{{ TitlePage }}</h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+                <div class="toast-body ">
+                    {% for error in form.non_field_errors %}
+                        <h6 class="fw-bold mt-3 mb-1">
+                            {{ error|escape }}
+                        </h6>
+
+                    {% endfor %}
+                </div>
+            </div><!--end toast-->
+
+        </div>
+    </div>
+{% endif %}
+{% if messages %}
+    <div class="col-lg-12">
+        <div class="toast-container position-absolute p-3 top-0 start-0"
+             id="toastPlacement"
+             data-original-class="toast-container position-absolute p-3">
+            {% for message in messages %}
+                <div class="toast fade show" role="alert" aria-live="assertive"
+                     aria-atomic="true">
+                    <div class="toast-header text-white
+                        {% if 'success' in message.tags %}bg-success
+                        {% elif 'error' in message.tags %}bg-danger
+                        {% else %}bg-primary
+                        {% endif %}">
+                        <img src="{% static 'assets/images/default/default-icon-sm.png' %}" alt="..."
+                             height="20"
+                             class="me-1">
+                        <h6 class="text-white me-auto my-0">{{ TitlePage }}</h6>
+                        <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                    <div class="toast-body">
+                        <h6 class="fw-bold mt-3 mb-1">
+                            {{ message }}
+                        </h6>
+                    </div>
+                </div><!--end toast-->
+            {% endfor %}
+        </div>
+    </div>
+{% endif %}
+
+{##}
+{#{% if messages %}#}
+{#    <div class="col-lg-12">#}
+{#        <div class="toast-container position-absolute p-3 top-0 start-0"#}
+{#             id="toastPlacement"#}
+{#             data-original-class="toast-container position-absolute p-3">#}
+{#            <div class="toast fade show" role="alert" aria-live="assertive"#}
+{#                 aria-atomic="true">#}
+{#                <div class="toast-header text-white bg-primary">#}
+{#                    <img src="{% static 'assets/images/default/default-icon-sm.png' %}" alt="..."#}
+{#                         height="20"#}
+{#                         class="me-1">#}
+{#                    <h6 class="text-white me-auto my-0">{{ TitlePage }}</h6>#}
+{#                    <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>#}
+{#                </div>#}
+{#                <div class="toast-body ">#}
+{#                    {% for message in messages %}#}
+{#                        <h6 class="fw-bold mt-3 mb-1">#}
+{#                            {{ message }}#}
+{#                        </h6>#}
+{##}
+{#                    {% endfor %}#}
+{#                </div>#}
+{#            </div><!--end toast-->#}
+{##}
+{#        </div>#}
+{#    </div>#}
+{#{% endif %}#}

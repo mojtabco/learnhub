@@ -1,0 +1,242 @@
+{% extends "core/layout/main.html" %}
+{% load static %}
+
+{% block ContentPage %}
+    <div class="page-wrapper">
+
+        <!-- Page Content-->
+        <div class="page-content-tab">
+
+            <div class="container-fluid">
+                <!-- Page-Title -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="page-title-box">
+                            <div class="float-end">
+                                {% include "core/include/breadcrumb.html" with breadcrumbs=breadcrumbs %}
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12 text-start">
+                                    <div class="text-start">
+                                        <ul class="list-inline">
+                                            <li class="list-inline-item">
+                                                <p class="text-blue mt-0">
+                                                    {{ link }}
+                                                </p>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <form role="search" action="" method="GET">
+                                                    <div class="input-group">
+                                                        {{ form_search.SearchText }}
+                                                        <button type="submit" class="btn btn-primary btn-sm"><i
+                                                                class="fas fa-search"></i></button>
+                                                    </div>
+                                                </form>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <a href="{% url 'search' %}" class="btn btn-primary btn-sm"
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom" title="حذف فیلتر"
+                                                   data-bs-trigger="hover">
+                                                    <i class="fas fa-times"></i>
+                                                </a>
+                                            </li>
+                                            <li class="list-inline-item">
+                                                <a href="/courses/search?link=like" class="btn btn-primary btn-sm"
+                                                   data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                   title="لایک شده " data-bs-trigger="hover">
+                                                    <i class="fas fa-heart"></i>
+                                                </a>
+                                            </li>
+                                            {% if user.is_authenticated %}
+                                                <li class="list-inline-item">
+                                                    <a href="/courses/search?link=tags" class="btn btn-primary btn-sm"
+                                                       data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                       title="انتخاب شده شما " data-bs-trigger="hover">
+                                                        <i class="fas fa-bookmark"></i>
+                                                    </a>
+                                                </li>
+                                                <li class="list-inline-item">
+                                                    <a href="/courses/search?link=owner" class="btn btn-primary btn-sm"
+                                                       data-bs-toggle="tooltip" data-bs-placement="bottom"
+                                                       title=" ویدیوهای شما " data-bs-trigger="hover">
+                                                        <i class="mdi mdi-firebase"></i>
+                                                    </a>
+                                                </li>
+                                            {% endif %}
+
+                                        </ul>
+                                    </div>
+                                </div><!--end col-->
+                            </div><!--end row-->
+                        </div>
+                        <!--end page-title-box-->
+                    </div>
+                    <!--end col-->
+                </div>
+                <!-- end page title end breadcrumb -->
+
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+                    {% if list_course %}
+                        {% for course in list_course %}
+                            <div class="col-lg-3 col-lg-2">
+                                <div class="card shadow rounded-4">
+                                    <div class="card-body">
+                                        <a href="{% url 'view' course.id %}">
+                                            {% if not course.completed %}
+                                                <div class="ribbon4 rib4-blue">
+                                                    <span class="text-white text-center ribbon4-band ribbon4-band-blue ">    درحال تکمیل </span>
+                                                </div>
+                                            {% endif %}
+                                            {% if course.thumbnail %}
+                                                <img src="{{ course.thumbnail.url }}" alt="..."
+                                                     class="card-img-top img-fluid rounded-4">
+                                            {% else %}
+                                                <img src="{% static 'assets/images/default/default-cover.gif' %}"
+                                                     alt="..."
+                                                     class="card-img-top img-fluid rounded-4">
+                                            {% endif %}
+                                        </a>
+
+                                        <div class="col-auto list-inline-item me-0">
+                                            {% if course.certified %}
+                                                <i class="fas fa-crown mdi-18px text-warning  "></i>
+                                                <span class="badge bg-soft-blue px-2 py-2 mt-2"> این دوره دارای گواهی نامه می باشد</span>
+                                            {% else %}
+                                                <i class="fas fa-star text-warning "></i>
+                                                <span class="badge bg-soft-blue px-2 py-2 mt-2"> دسترسی رایگان برای اعضای هاب لرن</span>
+                                            {% endif %}
+
+                                        </div>
+
+                                        <div class="col-auto me-0">
+                                            <i class="mdi mdi-firebase text-primary font-14 "></i>
+                                            <span class="badge bg-soft-blue px-2 py-2 mt-2">
+                                                تعداد جلسات
+                                                {{ course.lesson_count }}
+                                            </span>
+                                        </div>
+
+
+                                        <h5 class="my-3">
+                                            <a href="{% url 'view' course.id %}">
+                                                {{ course.title|truncatewords:10 }}
+                                            </a>
+                                        </h5>
+                                        <p class="card-text text-muted text-sm-start font-12">
+                                            {{ course.description|truncatewords:25 }}
+                                        </p>
+                                        <hr>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="meta-box">
+                                                <div class="media tag-section ">
+                                                    <a href="#" class="tag-href"
+                                                       data-href-template="{% url 'course_tag' course.id %}">
+                                                        <div class="align-self-center d-inline-block ms-1 ">
+                                                            {% if user in course.tag.all %}
+                                                                <i class="mdi mdi-bookmark text-blue font-20 tag-icon"></i>
+                                                            {% else %}
+                                                                <i class="mdi mdi-bookmark-outline text-blue font-20 tag-icon"></i>
+                                                            {% endif %}
+                                                        </div>
+                                                    </a>
+                                                    <span class="badge badge-md badge-soft-primary align-self-center ms-1">
+                                                         #{{ course.subcategory }}
+                                                     </span>
+                                                </div>
+                                            </div>
+                                            <div class="align-self-end">
+                                                <div class="align-self-center d-inline-block like-section me-1">
+                                                    <a href="#" class="like-href"
+                                                       data-href-template="{% url 'course_like' course.id %}">
+                                                        <span class="like-count">
+                                                            {% if course.total_likes > 0 %}
+                                                                {{ course.total_likes }}
+                                                            {% endif %}
+                                                        </span>
+                                                        <span>
+                                                            {% if user in course.likes.all %}
+                                                                <i class="mdi mdi-heart text-danger font-20 like-icon "></i>
+                                                            {% else %}
+                                                                <i class="mdi mdi-heart-outline text-danger font-20 like-icon"></i>
+                                                            {% endif %}
+                                                        </span>
+                                                    </a>
+                                                    <input type="hidden" name="csrfmiddlewaretoken"
+                                                           value="{{ csrf_token }}">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="col-lg-3 col-lg-2">
+                            <div class="card  shadow rounded-4">
+                                <div class="card-body ">
+                                    <div class="ribbon1 rib1-warning ">
+                                        <span class="text-white text-center rib1-warning "> دوره وجود ندارد </span>
+                                    </div>
+                                    <a href="">
+                                        <img src="{% static 'assets\images\default\default-search.jpg' %}" alt="..."
+                                             class="card-img-top img-fluid rounded-4 ">
+                                    </a>
+                                    <div class="col-auto list-inline-item me-0">
+                                        <i class="fas fa-star text-warning"></i>
+                                        <span class="badge bg-soft-blue px-1 py-2 mt-2"> به همین سادگی</span>
+                                    </div>
+                                    <h5 class="my-3">
+                                        چیزی پیدا نکردم
+                                    </h5>
+                                    <p class="card-text  text-muted text-sm-start font-12">
+                                        دوره های اموزشی رایگان لرن هاب
+                                    </p>
+
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <div class="meta-box">
+                                            <div class="media">
+                                                <div class="align-self-center d-inline-block">
+                                                    <i class="mdi mdi-bookmark-outline text-blue font-20"></i>
+                                                </div>
+                                                <div class="media-body align-self-center text-truncate">
+
+                                                </div><!--end media-body-->
+                                            </div>
+                                        </div><!--end meta-box-->
+                                        <div class="align-self-end">
+
+                                            <div class="align-self-center d-inline-block me-1">
+                                                <i class="mdi mdi-heart text-danger font-20"></i>
+                                                <span class="font-14 fw-semibold"></span>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+                                </div><!--end card-body-->
+                            </div><!--end card-->
+                        </div> <!--end col-->
+                    {% endif %}
+                </div><!--end row-->
+
+                <div class="row">
+
+
+                </div><!--end row-->
+
+            </div><!-- container -->
+
+
+        </div>
+        <!-- end page content -->
+    </div>
+    <!-- end page-wrapper -->
+
+{% endblock %}
+
+
+{% block Javascript %}
+    {% include "core/include/script.html" %}
+    <script src="{% static 'assets/js/search-like.js' %}"></script>
+{% endblock %}
