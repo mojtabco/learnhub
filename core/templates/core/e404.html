@@ -11,32 +11,22 @@
                         <div class="col-lg-5 mx-auto">
                             <div class="card">
                                 <div class="card-body p-0 auth-header-box">
-                                    <div class="text-center p-3">
-                                        <a href="index.html" class="logo logo-admin">
-                                            <img src="{% static 'assets/images/default/default-icon-sm.png' %}" height="50" alt="logo"
-                                                 class="auth-logo">
-                                        </a>
-                                        <h4 class="mt-3 mb-1 fw-semibold text-white font-18">اوه! با عرض پوزش صفحه یافت
-                                            نشد</h4>
-                                        <p class="text-muted  mb-0">بازگشت به داشبورد لرن هاپ</p>
+                                    <div class="text-center p-1">
+                                        <img src="{% static 'assets/images/default/default-icon-sm.png' %}"
+                                             height="50" alt="logo"
+                                             class="auth-logo">
+                                        <h4 class="mt-3 mb-1 fw-semibold text-white font-18"> لرن هاب</h4>
+                                        <h4 class="font-14 text-light ">{{ Err }}</h4>
                                     </div>
                                 </div>
                                 <div class="card-body">
                                     <div class="ex-page-content text-center">
-                                        <img src="{% static 'assets/images/default/error.svg' %}" alt="..." class="" height="170">
-                                        <h1 class="mt-5 mb-5">404!</h1>
+                                        <img src="{% static 'assets/images/default/error.svg' %}" alt="..." class=""
+                                             height="300">
+                                        <h6 class="mt-5 mb-5"></h6>
 
-                                        {% if messages %}
-                                            <div>
-                                                {% for message in messages %}
-                                                    <div class="alert alert-danger">
-                                                        {{ message }}
-                                                    </div>
-                                                {% endfor %}
-                                            </div>
-                                        {% endif %}
-                                        <span class="badge badge-soft-blue fw-semibold mb-2 "><i class="fas fa-check"></i> {{ exception }}</span>
-                                        <h5 class="font-16 text-danger mb-3">{{ Err }}</h5>
+                                        <h4 class="badge badge-soft-danger fw-semibold mb-2 font-14"> {{ exception }}</h4>
+
                                     </div>
                                     <a class="btn btn-primary w-100" href="/">بازگشت به داشبورد <i
                                             class="fas fa-redo ml-1 " style="transform: rotateY(180deg);"></i></a>
