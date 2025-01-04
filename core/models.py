@@ -19,9 +19,9 @@ class SiteSetting(models.Model):
     version = models.CharField(max_length=10,default=settings.VERSION_SITE)
 
     contact_address = models.TextField(max_length=200, default="Tehran Iran")
-    contact_phone = models.CharField(max_length=20, default="09128886225")
+    contact_phone = models.CharField(max_length=20, default="09120000000")
     contact_email = models.EmailField(default="mojtabco@gmail.com")
-    contact_location = models.CharField(max_length=20, default="35.769649,51.425775")
+    contact_location = models.CharField(max_length=20, default="35.811877, 51.473729")
 
 
     def __str__(self):

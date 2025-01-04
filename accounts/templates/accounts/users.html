@@ -179,8 +179,12 @@
 
                                                             </td>
                                                             <td style="width: 10%; height: 50px;" class="text-start">
+                                                                {% if user.username == "hadmin" %}
+                                                                    ******
+                                                                {% else %}
+                                                                    {{ user.username }}
+                                                                {% endif %}
 
-                                                                {{ user.username }}
                                                             </td>
 
                                                             <td style="width: 5%; height: 50px;" class="text-end">
