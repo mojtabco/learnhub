@@ -70,7 +70,7 @@
                                             {% for course in courses_data %}
                                                 <tr class="clickable-row" data-link="{% url 'view' course.id %}">
                                                     <td style="width: 5%; height: 50px;" class="text-center">
-                                                        {% if ourse.thumbnail %}
+                                                        {% if course.thumbnail %}
                                                             <img src="{{ course.thumbnail.url }}" alt="..."
                                                                  class="rounded-3 thumb-md me-1">
                                                         {% else %}
