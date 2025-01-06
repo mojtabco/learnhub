@@ -12,7 +12,6 @@
 - **Access Control**: Fine-grained control over course access for specific users or groups.
 - **Quote Management**: Feature to add motivational quotes with likes functionality.
 - **History Logging**: Logs user login history with IP addresses and timestamps.
-- **Responsive UI**: Clean and intuitive interface with localStorage support for menu state persistence.
 
 ### Technologies Used in Frontend
 - **HTML5, CSS3, JavaScript**: The core technologies used to build the frontend of LearnHub.

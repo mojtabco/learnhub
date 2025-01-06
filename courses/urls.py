@@ -26,6 +26,7 @@ urlpatterns = [
 
     # Admin View
     path('courses/admin', admin_views.MyCourseAdminView.as_view(), name='mycourse-admin'),
+    path('courses/certificate/admin', admin_views.CertificateAdminView.as_view(), name='certificate-admin'),
     path('courses/<int:id>/admin', admin_views.MyCourseAdminUserView.as_view(), name='mycourse-admin-user'),
     path('courses/update/<int:id>/admin', admin_views.CourseUpdateAdminView.as_view(), name='courseupdate-admin'),
     path('courses/myseason/<int:id>/admin', admin_views.MySeasonAdminView.as_view(), name='myseason-admin'),

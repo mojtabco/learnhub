@@ -199,8 +199,6 @@ class UsersView(View):
         form_search, search_text = self.get_search_text(request)
 
         try:
-            # profileusers_data = ProfileUser.objects.prefetch_related(
-            #     Prefetch('user__userloginhistory_set', queryset=UserLoginHistory.objects.all()))
             users_data = User.objects.all()
             if search_text:
                 users_data = users_data.filter(
@@ -209,7 +207,7 @@ class UsersView(View):
                     Q(user__last_name__icontains=search_text))
 
 
-        except ProfileUser.DoesNotExist:
+        except User.DoesNotExist:
             raise Http404("اطلاعات برای کاربر وجود ندارد")
 
         time_minutes_ago = timezone.now() - timedelta(minutes=settings.TIME_MINUTES_AGO)

@@ -136,11 +136,17 @@
 
                         {% endif %}
                         {% if user.is_superuser %}
+                            <hr>
                             <li class="nav-link">
-{#                                <a href="">#}
                                     <a class="icon-dual-2" href="{% url 'mycourse-admin' %}">
                                         <i class="mdi mdi-firebase mdi-18px me-1 align-text-bottom"></i>
                                         <span> فایل های کاربران</span>
+                                    </a>
+                            </li><!--end nav-item-->
+                            <li class="nav-link">
+                                    <a class="icon-dual-2" href="{% url 'certificate-admin' %}">
+                                        <i class="mdi mdi-certificate mdi-18px me-1 align-text-bottom"></i>
+                                        <span> مدارک کاربران</span>
                                     </a>
                             </li><!--end nav-item-->
                         {% endif %}

@@ -5,8 +5,10 @@ from django.shortcuts import render
 from django.views import View
 from courses.forms import SearchForm
 from courses.models import Course
+from courses.models.lesson_models import Certificate
 from courses.views import LessonUpdateView, MyLessonView, SeasonUpdateView, MySeasonView, CourseUpdateView, \
     paginate_queryset
+from django.utils import translation
 import os
 
 class MyCourseAdminView(View):
@@ -170,5 +172,53 @@ class LessonUpdateAdminView(LessonUpdateView):
             {"label": "داشبورد", "url": "/"},
         ]
         return context
+
+class CertificateAdminView(View):
+    template_name = "courses/admin-page/certificate-admin.html"
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise Http404("شما اجازه دسترسی به این صفحه را ندارید.")
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_search_text(self, request):
+        form_search = SearchForm(request.GET)
+        search_text = form_search.cleaned_data.get("SearchText") if form_search.is_valid() else None
+        return form_search, search_text
+
+    def get_context_data(self,request):
+        form_search, search_text = self.get_search_text(request)
+
+        try:
+            certificate_data = Certificate.objects.filter(certificate_code__isnull=False).select_related('student__profileuser').all()
+            if search_text:
+                certificate_data = certificate_data.filter(
+                    Q(student__username__icontains=search_text) |
+                    Q(course__name__icontains=search_text) |
+                    Q(course__title__icontains=search_text)
+                )
+
+        except Certificate.DoesNotExist:
+            raise Http404("اطلاعات مدارک وجود ندارد")
+
+
+        # Pagination
+        certificate_data = paginate_queryset(certificate_data, request, per_page=6)
+
+        breadcrumbs = [
+            {"label": "مدارک کاربران", "url": ""},
+            {"label": "داشبورد", "url": "/"},
+        ]
+        return {
+            'certificate_data': certificate_data,
+            'form_search': SearchForm(request.GET),
+            'breadcrumbs': breadcrumbs,
+        }
+
+    def get(self, request, *args, **kwargs):
+
+        context = self.get_context_data(request)
+        return render(request, self.template_name, context)
+
 
 
